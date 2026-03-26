@@ -1,9 +1,9 @@
-// Prima Nota Pro 1.0® - Main Initialization & Routing
-
-
-
+window.splashScreen = document.getElementById('splash-screen');
+window.mainShell = document.getElementById('app-shell');
+window.mainContent = document.getElementById('content-area');
 
 // --- AUTO-SYNC SETUP ---
+
 if (typeof CategoryManager !== 'undefined') {
     CategoryManager.onDataChange = (type) => {
         console.log(`Data changed: ${type}. Auto-syncing...`);
