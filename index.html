@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppStudio Pro 1.0® - Ecosistema Digitale</title>
+    <link rel="stylesheet" href="hub-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app-container">
+        <header>
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <img src="logo_ecosystem.png" alt="AppStudio Logo" class="hub-logo">
+                    <span style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em; color: var(--eco-text-title);">APPSTUDIO <span style="color: var(--eco-accent);">PRO 1.0 (R)</span></span>
+                </div>
+                
+                <nav class="nav-links">
+                    <a href="javascript:void(0)" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">Scopri l'Ecosistema</a>
+                    <a href="javascript:void(0)" onclick="document.getElementById('apps').scrollIntoView({behavior:'smooth'})">Tutte le App</a>
+                    <a href="javascript:void(0)" onclick="window.showHubModal('cloud-settings')" style="color: var(--eco-accent); font-weight: 800;">⚙️ Impostazioni Cloud</a>
+                    <a href="javascript:void(0)" onclick="window.showHubModal('developer')">Per Sviluppatori</a>
+                    <a href="javascript:void(0)" onclick="window.showHubModal('pricing')">Prezzi</a>
+                    <a href="javascript:void(0)" onclick="window.showHubModal('blog')">Blog</a>
+                    <a href="javascript:void(0)" onclick="window.showHubModal('register')">Registrati</a>
+                </nav>
+
+                <div style="display: flex; align-items: center; gap: 2rem;">
+                    <div class="window-controls">
+                        <div class="win-dot red" title="Esci" onclick="alert('Uscita dal sistema...')"></div>
+                        <div class="win-dot yellow" title="Iconizza" onclick="window.toggleHubWindow(document.getElementById('app-container'), 'minimized')"></div>
+                        <div class="win-dot green" title="Ingrandisci" onclick="window.toggleHubWindow(document.getElementById('app-container'), 'maximized')"></div>
+                    </div>
+                    <button class="btn-primary" style="padding: 0.8rem 2rem; font-size: 0.9rem;" onclick="window.showHubModal('login')">LOGIN</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero container fade-in">
+                <div class="ecosystem-tree-container">
+                    <img src="logo_ecosystem.png" alt="AppStudio Ecosystem Tree" class="ecosystem-tree">
+                </div>
+                
+                <h1 class="hero-title">IL TUO ECOSISTEMA<br>DI APP DIGITALI, <span>TOTALMENTE</span><br>APPSTUDIO PRO 1.0 (R)</h1>
+                <p class="hero-subtitle">
+                    APPSTUDIO PRO 1.0 (R): LA PIATTAFORMA UNICA PER CONNETTERE TUTTE LE TUE APPLICAZIONI.
+                </p>
+                <div style="display: flex; gap: 1.5rem; justify-content: center;">
+                    <button class="btn-primary" onclick="document.getElementById('apps').scrollIntoView({behavior: 'smooth'})">COMINCIA ORA</button>
+                    <button class="btn-secondary" style="background: rgba(255,255,255,0.2); border: 1px solid var(--eco-glass-border);" onclick="localStorage.clear(); location.reload();">RESET DATI</button>
+                </div>
+            </section>
+
+            <!-- Why Section -->
+            <section id="why" class="container fade-in" style="padding-top: 5rem;">
+                <h2 style="text-align: center; color: var(--eco-accent); font-weight: 800; letter-spacing: 0.1em; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 3rem;">Perchè APPSTUDIO PRO 1.0 (R)?</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">🌿</span>
+                        <h3 style="color: var(--eco-text-title); margin-bottom: 1rem;">INTEGRAZIONE SEMPLICE</h3>
+                        <p style="font-size: 0.95rem; opacity: 0.8;">Integrazione connessa e semplice</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">⚡</span>
+                        <h3 style="color: var(--eco-text-title); margin-bottom: 1rem;">MASSIMA EFFICIENZA</h3>
+                        <p style="font-size: 0.95rem; opacity: 0.8;">Massima efficienza e affidabilità</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🛡️</span>
+                        <h3 style="color: var(--eco-text-title); margin-bottom: 1rem;">DATI SICURI</h3>
+                        <p style="font-size: 0.95rem; opacity: 0.8;">Dati sicuri in locale e nel cloud</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status Section -->
+            <section class="status-section container fade-in">
+                <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--eco-text-title); margin-bottom: 2rem;">Il Tuo Ecosistema in Azione</h2>
+                <div class="status-badge">
+                    <div class="pulse-dot"></div>
+                    Sincronizzazione Attiva
+                </div>
+            </section>
+
+            <section id="apps" class="container fade-in" style="padding: 100px 0;">
+                <h2 style="font-size: 3rem; font-weight: 800; color: var(--eco-text-title); text-align: center; margin-bottom: 5rem;">Sfoglia l'Ecosistema</h2>
+                
+                <div class="app-grid">
+                    <!-- Prima Nota Pro -->
+                    <a href="prima-nota/index.html" class="glass-card app-card" style="padding-top:1.5rem;">
+                        <div class="window-controls" style="align-self: flex-start; margin-bottom: 2.5rem; margin-top: -0.5rem; pointer-events: auto;">
+                            <div class="win-dot red" onclick="event.preventDefault(); this.closest('.app-card').style.display='none'"></div>
+                            <div class="win-dot yellow" onclick="event.preventDefault(); window.toggleHubWindow(this.closest('.app-card'), 'minimized')"></div>
+                            <div class="win-dot green" onclick="event.preventDefault(); window.toggleHubWindow(this.closest('.app-card'), 'maximized')"></div>
+                        </div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, var(--eco-accent) 0%, var(--eco-secondary) 100%);">📈</div>
+                        <h3>Prima Nota Pro</h3>
+                        <p>Gestione flussi finanziari, entrate, uscite e scadenze con bilancio proattivo. Il cuore pulsante del tuo business.</p>
+                        <div style="margin-top: 2.5rem; color: var(--eco-accent); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">ACCEDI AL MODULO →</div>
+                    </a>
+
+                    <!-- CRM Pro -->
+                    <div class="glass-card app-card" style="opacity: 0.7; padding-top:1.5rem;">
+                        <div class="window-controls" style="align-self: flex-start; margin-bottom: 2.5rem; margin-top: -0.5rem;">
+                            <div class="win-dot red" onclick="this.closest('.app-card').style.display='none'"></div>
+                            <div class="win-dot yellow" onclick="window.toggleHubWindow(this.closest('.app-card'), 'minimized')"></div>
+                            <div class="win-dot green" onclick="window.toggleHubWindow(this.closest('.app-card'), 'maximized')"></div>
+                        </div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #ad8b6a 0%, #8c6c4c 100%);">👥</div>
+                        <h3>CRM Connect</h3>
+                        <p>Anagrafica clienti intelligente, cronologia interazioni e lead tracking. La tua rubrica professionale 2.0.</p>
+                        <div style="margin-top: 2.5rem; color: var(--eco-text-body); font-weight: 800; font-size: 0.85rem; opacity:0.6;">PROSSIMAMENTE</div>
+                    </div>
+
+                    <!-- Warehouse Pro -->
+                    <a href="warehouse-pro/index.html" class="glass-card app-card" style="text-decoration: none; color: inherit; padding-top:1.5rem;">
+                        <div class="window-controls" style="align-self: flex-start; margin-bottom: 2.5rem; margin-top: -0.5rem;">
+                            <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
+                        </div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #7d8c6a 0%, #5d664c 100%);">📦</div>
+                        <h3>Warehouse Pro</h3>
+                        <p>Inventario dinamico, controllo scorte e analisi del deterioramento. Gestisci ogni pezzo con precisione.</p>
+                        <div style="margin-top: 2.5rem; color: var(--eco-accent); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">ACCEDI AL MODULO →</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="container fade-in" style="padding-bottom: 150px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem;">
+                    <div class="glass-card" style="padding: 3rem; text-align: center;">
+                        <h4 style="font-size: 1.4rem; color: var(--eco-text-title); margin-bottom: 1rem; font-weight: 800;">INTEGRAZIONE SEMPLICE</h4>
+                        <p>Ogni app nell'ecosistema parla la stessa lingua, sincronizzando dati e processi istantaneamente.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 3rem; text-align: center;">
+                        <h4 style="font-size: 1.4rem; color: var(--eco-text-title); margin-bottom: 1rem; font-weight: 800;">MASSIMA EFFICIENZA</h4>
+                        <p>Elimina le ridondanze e focalizzati sulla crescita grazie a strumenti ottimizzati per le tue performance.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 3rem; text-align: center;">
+                        <h4 style="font-size: 1.4rem; color: var(--eco-text-title); margin-bottom: 1rem; font-weight: 800;">DATI SICURI</h4>
+                        <p>Crittografia di grado militare e backup cloud automatici per proteggere il patrimonio della tua azienda.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer style="padding: 6rem 0; background: var(--eco-accent); color: rgba(255,255,255,0.7); text-align: center;">
+            <div class="container">
+                <img src="logo_ecosystem.png" style="width: 60px; filter: brightness(0) invert(1); margin-bottom: 2rem;" alt="Logo White">
+                <p style="font-size: 1rem; margin-bottom: 1.5rem; font-weight: 600; color: #fff;">© 2026 APPSTUDIO PRO 1.0® - Ecosistema Digitale Premium</p>
+                <div style="display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; font-size: 0.9rem; font-weight: 700;">
+                    <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Termini di Utilizzo</a>
+                    <a href="#" style="color: inherit; text-decoration: none;">Credits</a>
+                </div>
+                <p style="opacity: 0.4; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3em;">Powered by Antigravity Digital Studio</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        window.toggleHubWindow = (el, state) => {
+            if(state === 'minimized') {
+                el.classList.toggle('minimized');
+                el.classList.remove('maximized');
+            } else if(state === 'maximized') {
+                el.classList.toggle('maximized');
+                el.classList.remove('minimized');
+            }
+        };
+
+        window.showHubModal = (type) => {
+            let overlay = document.querySelector('.modal-overlay');
+            if(!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+                document.body.appendChild(overlay);
+            }
+            
+            let content = '';
+            const header = (title) => `<div class="card-header" style="background:rgba(255,255,255,0.05); border-bottom:1px solid var(--eco-glass-border); display:flex; justify-content:space-between; align-items:center; padding:1.2rem 2rem;">
+                <span style="font-weight:900; color:var(--eco-accent); font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">${title}</span>
+                <div class="window-controls">
+                    <div class="win-dot red" title="Esci" onclick="document.querySelector('.modal-overlay').remove()"></div>
+                </div>
+            </div>`;
+
+            if(type === 'login') {
+                content = `<div class="hub-modal">${header('LOGIN')}
+                    <div class="modal-body">
+                        <h2 style="font-size:2rem; margin-bottom:1rem; color:var(--eco-text-title);">Bentornato</h2>
+                        <p style="margin-bottom:2rem; opacity:0.7;">Accedi al tuo ecosistema AppStudio Pro.</p>
+                        <input type="text" placeholder="Username / Email" class="hub-input">
+                        <input type="password" placeholder="Password" class="hub-input">
+                        <button class="btn-primary" style="width:100%; height:60px;" onclick="location.reload()">ENTRA ORA 🚀</button>
+                    </div>
+                </div>`;
+            } else if(type === 'register') {
+                content = `<div class="hub-modal">${header('REGISTRATI')}
+                    <div class="modal-body">
+                        <h2 style="font-size:2rem; margin-bottom:1rem; color:var(--eco-text-title);">Crea il tuo Account</h2>
+                        <p style="margin-bottom:2rem; opacity:0.7;">Entra nell'ecosistema digitale del futuro.</p>
+                        <input type="text" placeholder="Nome Ristorante / Azienda" class="hub-input">
+                        <input type="email" placeholder="Email Professionale" class="hub-input">
+                        <input type="password" placeholder="Crea Password" class="hub-input">
+                        <button class="btn-primary" style="width:100%; height:60px;" onclick="location.reload()">CREA ACCOUNT 🌿</button>
+                    </div>
+                </div>`;
+            } else if(type === 'cloud-settings') {
+                const url = localStorage.getItem('SUPABASE_URL') || '';
+                const key = localStorage.getItem('SUPABASE_KEY') || '';
+                content = `<div class="hub-modal">${header('IMPOSTAZIONI CLOUD')}
+                    <div class="modal-body">
+                        <h2 style="font-size:1.8rem; margin-bottom:1rem; color:var(--eco-text-title);">Connessione Mobile</h2>
+                        <p style="margin-bottom:2rem; opacity:0.7; font-size:0.9rem;">Configura il tuo database Supabase per sincronizzare i dati con il tuo smartphone Android.</p>
+                        
+                        <div style="margin-bottom:1.5rem;">
+                            <label style="display:block; font-weight:800; font-size:0.75rem; color:var(--eco-accent); margin-bottom:0.5rem; text-transform:uppercase;">Supabase Project URL</label>
+                            <input type="text" id="set-url" value="${url}" placeholder="https://xyz.supabase.co" class="hub-input" style="margin-bottom:0;">
+                        </div>
+                        
+                        <div style="margin-bottom:2rem;">
+                            <label style="display:block; font-weight:800; font-size:0.75rem; color:var(--eco-accent); margin-bottom:0.5rem; text-transform:uppercase;">Supabase Anon Key</label>
+                            <input type="password" id="set-key" value="${key}" placeholder="eyJhbG..." class="hub-input" style="margin-bottom:0;">
+                        </div>
+
+                        <button class="btn-primary" style="width:100%;" onclick="window.saveCloudSettings()">SALVA E ATTIVA CLOUD ☁️</button>
+                        
+                        <div style="margin-top:2rem; padding:1.5rem; background:rgba(93,102,76,0.05); border-radius:16px; border:1px solid var(--eco-glass-border);">
+                            <h4 style="margin:0 0 0.5rem 0; font-size:0.85rem; color:var(--eco-accent);">Guida Mobile Rapida</h4>
+                            <p style="font-size:0.8rem; margin:0; opacity:0.7;">1. Copia i dati dal tuo account Supabase.<br>2. Salva qui sul computer.<br>3. Apri lo stesso link dal tuo Android e troverai tutto già configurato!</p>
+                        </div>
+                    </div>
+                </div>`;
+            } else if(type === 'pricing') {
+                content = `<div class="hub-modal" style="max-width:1100px;">${header('PIANI E PREZZI')}
+                    <div class="modal-body">
+                        <h2 style="font-size:2rem; text-align:center; margin-bottom:1rem; color:var(--eco-text-title);">Scegli la tua potenza</h2>
+                        <div class="pricing-grid">
+                            <div class="pricing-card">
+                                <h3 style="font-size:1.5rem; color:var(--eco-accent);">Community</h3>
+                                <p style="font-size:2.5rem; font-weight:800; margin:1.5rem 0; color:var(--eco-text-title);">€0 <small style="font-size:0.8rem; opacity:0.6;">/mese</small></p>
+                                <ul style="text-align:left; list-style:none; padding:0; margin-bottom:2rem; font-size:0.95rem; color:var(--eco-text-body); opacity:0.8; display:flex; flex-direction:column; gap:0.8rem;">
+                                    <li>✓ 3 App Core Separate</li>
+                                    <li>✓ Salvataggio Locale (LS)</li>
+                                    <li>✓ Comunità Social AppStudio</li>
+                                </ul>
+                                <button class="btn-secondary" style="width:100%;" onclick="window.showHubModal('register')">INIZIA ORA</button>
+                            </div>
+                            <div class="pricing-card premium">
+                                <h3 style="font-size:1.5rem; color:var(--eco-secondary);">Professional</h3>
+                                <p style="font-size:2.5rem; font-weight:800; margin:1.5rem 0; color:var(--eco-text-title);">€29 <small style="font-size:0.8rem; opacity:0.6;">/mese</small></p>
+                                <ul style="text-align:left; list-style:none; padding:0; margin-bottom:2rem; font-size:0.95rem; color:var(--eco-text-body); opacity:0.8; display:flex; flex-direction:column; gap:0.8rem;">
+                                    <li>✓ Accesso a Tutte le App</li>
+                                    <li>✓ Sincronizzazione Cloud Supabase</li>
+                                    <li>✓ Supporto Prioritario Dedicato</li>
+                                    <li>✓ Modulo Analyst Premium</li>
+                                </ul>
+                                <button class="btn-primary" style="width:100%;" onclick="window.showHubModal('register')">SCEGLI PRO</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            } else {
+                content = `<div class="hub-modal">${header(type.toUpperCase())}
+                    <div class="modal-body" style="text-align:center;">
+                        <h2 style="font-size:2.5rem; margin-bottom:1rem; color:var(--eco-text-title);">Area R&D</h2>
+                        <p style="opacity:0.7; color:var(--eco-text-body);">Il modulo <strong>${type}</strong> è attualmente in fase di sviluppo intensivo.</p>
+                        <div style="font-size:5rem; margin:3rem 0;">🏗️</div>
+                        <button class="btn-secondary" onclick="document.querySelector('.modal-overlay').remove()">TORNA ALL'ECOSISTEMA</button>
+                    </div>
+                </div>`;
+            }
+            overlay.innerHTML = content;
+        };
+
+        window.saveCloudSettings = () => {
+            const url = document.getElementById('set-url').value.trim();
+            const key = document.getElementById('set-key').value.trim();
+            if(url && key) {
+                localStorage.setItem('SUPABASE_URL', url);
+                localStorage.setItem('SUPABASE_KEY', key);
+                alert("Configurazione salvata! L'ecosistema sta attivando la sincronizzazione cloud.");
+                location.reload();
+            } else {
+                alert("Per favore, inserisci sia l'URL che la Chiave anonima.");
+            }
+        };
+    </script>
+</body>
+</html>
