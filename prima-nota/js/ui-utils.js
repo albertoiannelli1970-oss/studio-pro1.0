@@ -15,39 +15,34 @@ const icons = {
 };
 
 function updateNavIcons() {
-    document.getElementById('nav-dashboard').innerHTML = `${icons.dashboard} Dashboard`;
-    document.getElementById('nav-categorie').innerHTML = `${icons.categorie} Categorie`;
-    document.getElementById('nav-sottocategorie').innerHTML = `${icons.sottocategorie} Sottocategorie`;
-    document.getElementById('nav-clienti').innerHTML = `${icons.clienti} Clienti`;
-    document.getElementById('nav-scadenzario').innerHTML = `${icons.scadenzario} Scadenzario`;
-    document.getElementById('nav-studio').innerHTML = `${icons.studio} Modulo Studio`;
-    document.getElementById('nav-stampa').innerHTML = `${icons.stampa} Stampa`;
+    if (document.getElementById('nav-dashboard')) document.getElementById('nav-dashboard').innerHTML = `<span class="nav-icon">📊</span><span class="nav-text">Dashboard Bilancio</span>`;
+    if (document.getElementById('nav-categorie')) document.getElementById('nav-categorie').innerHTML = `<span class="nav-icon">📚</span><span class="nav-text">Legenda Categorie</span>`;
+    if (document.getElementById('nav-sottocategorie')) document.getElementById('nav-sottocategorie').innerHTML = `<span class="nav-icon">📋</span><span class="nav-text">Anagrafe Risorse</span>`;
+    if (document.getElementById('nav-clienti')) document.getElementById('nav-clienti').innerHTML = `<span class="nav-icon">👥</span><span class="nav-text">Anagrafe Clienti</span>`;
+    if (document.getElementById('nav-scadenzario')) document.getElementById('nav-scadenzario').innerHTML = `<span class="nav-icon">📅</span><span class="nav-text">Scadenzario</span>`;
+    if (document.getElementById('nav-studio')) document.getElementById('nav-studio').innerHTML = `<span class="nav-icon">📈</span><span class="nav-text">Modulo Studio Analyst</span>`;
+    if (document.getElementById('nav-stampa')) document.getElementById('nav-stampa').innerHTML = `<span class="nav-icon">🖨️</span><span class="nav-text">Centro Stampa</span>`;
 }
 
-function getCardHeader(title = "", onClose = "window.closeCard(this)", onMinimize = "window.toggleMinimize(this)", onMaximize = "window.toggleMaximize(this)") {
-    return `
-        <div class="card-header">
-            <div class="window-controls">
-                <span class="control close" title="Esci" onclick="${onClose}"></span>
-                <span class="control minimize" title="Iconizza" onclick="${onMinimize}"></span>
-                <span class="control maximize" title="Ingrandisci" onclick="${onMaximize}"></span>
-            </div>
-            ${title ? `<span class="header-title">${title}</span>` : ''}
+function getCardHeader(title = "", onClose = "renderDashboard()") {
+    return `<div class="card-header" style="padding:1.2rem 1.8rem; background:rgba(93,102,76,0.03); border-bottom:1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.8rem; font-weight:900; color:var(--eco-accent); text-transform:uppercase; letter-spacing:0.12em; opacity:0.8;">${title}</span>
+        <div class="window-controls">
+            <div class="win-dot red" title="Chiudi" onclick="${onClose}"></div>
+            <div class="win-dot yellow" title="Iconizza" onclick="window.toggleMinimize(this)"></div>
+            <div class="win-dot green" title="Ingrandisci" onclick="window.toggleMaximize(this)"></div>
         </div>
-    `;
+    </div>`;
 }
 
-function renderPageHero(title, subtitle, iconKey) {
-    const iconSvg = icons[iconKey] || '';
-    return `
-        <div class="page-hero fade-in" style="margin-bottom: 2rem; width: 100%; max-width: 1200px;">
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-                <div style="width: 40px; height: 40px; color: var(--pn-indigo);">
-                    ${iconSvg}
-                </div>
-                <h1 style="font-size: 2.2rem; margin: 0; font-weight: 800; color: white;">${title}</h1>
-            </div>
-            <p style="color: #64748b; font-size: 1rem; margin-left: 3.2rem;">${subtitle}</p>
+function renderPageHero(title, sub, icon) {
+    return `<div class="fade-in" style="margin-bottom:2.5rem; width:100%; max-width:1200px;">
+        <div style="display:flex; align-items:center; gap:1.2rem; margin-bottom:0.8rem;">
+            <div style="width:10px; height:10px; border-radius:50%; background:var(--eco-secondary); box-shadow:0 0 15px rgba(140,108,76,0.3);"></div>
+            <span style="font-size:0.85rem; font-weight:800; color:var(--eco-secondary); text-transform:uppercase; letter-spacing:0.1em;">${icon}</span>
         </div>
-    `;
+        <h1 style="font-weight:900; font-size:2.8rem; margin:0; letter-spacing:-0.04em; color:var(--eco-text-title);">${title}</h1>
+        <p style="color:var(--eco-text-body); font-size:1.1rem; margin-top:0.4rem; opacity:0.8;">${sub}</p>
+    </div>`;
 }
+

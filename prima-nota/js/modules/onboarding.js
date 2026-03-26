@@ -75,6 +75,12 @@ function renderOnboarding() {
                     </div>
                 </div>
 
+                <div style="margin-top: 3rem; border-top: 1px solid var(--glass-border); padding-top: 3rem;">
+                    <p style="color: #64748b; margin-bottom: 1.5rem; font-size: 0.9rem;">Hai già un account su un altro dispositivo?</p>
+                    <button class="btn-primary" style="background: var(--eco-accent-dark); padding: 1rem 2rem;" onclick="window.showCloudRecovery()">RECUPERA DAL CLOUD ☁️</button>
+                </div>
+
+
                 <div id="profile-form" style="display: none; flex-direction: column; gap: 1.5rem; max-width: 400px; margin: 0 auto; text-align: left;">
                     <div>
                         <label class="input-label">Nome Realtà / Azienda</label>
@@ -120,3 +126,19 @@ function completeOnboarding(type) {
     localStorage.setItem('pn_user_name', name);
     window.showSection('dashboard');
 }
+
+window.showCloudRecovery = () => {
+    const name = prompt("Inserisci il Nome del tuo Ristorante/Attività salvato nel Cloud:");
+    if (name) {
+        window.executeCloudRecovery(name);
+    }
+};
+
+window.executeCloudRecovery = async (name) => {
+    const success = await fetchDataFromCloud(name);
+    if (success) {
+        alert("Dati recuperati con successo! Accesso in corso...");
+        location.reload(); // Refresh to apply all modular data
+    }
+};
+

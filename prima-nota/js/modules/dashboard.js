@@ -2,31 +2,18 @@
 
 function renderDashboard() {
     const totals = transManager.getTotals();
-    const recent = transManager.getRecent(5);
-    const userName = localStorage.getItem('pn_user_name') || 'Utente';
-
+    const userName = localStorage.getItem('pn_user_name') || 'Ristorante';
+    
     mainContent.innerHTML = `
-        <div class="glass-card fade-in" style="margin-bottom: 2rem;">
-            ${getCardHeader('DASHBOARD PRINCIPALE', 'window.logout()')}
-            <div style="padding: 2rem;">
-                ${renderPageHero(`Benvenuto, ${userName}`, 'Bentornato nell\'ecosistema gestionale del futuro.', 'dashboard')}
-            </div>
-        </div>
-        
-        <div class="dashboard-grid fade-in">
-            <div class="glass-card stat-card" style="border-left: 4px solid var(--pn-green);">
-                <span class="stat-label">Entrate Totali</span>
-                <span class="stat-value">€ ${totals.entrate.toLocaleString('it-IT')}</span>
-            </div>
-            <div class="glass-card stat-card" style="border-left: 4px solid var(--pn-red);">
-                <span class="stat-label">Uscite Totali</span>
-                <span class="stat-value">€ ${totals.uscite.toLocaleString('it-IT')}</span>
-            </div>
-            <div class="glass-card stat-card" style="border-left: 4px solid var(--pn-indigo);">
-                <span class="stat-label">Saldo Attuale</span>
-                <span class="stat-value">€ ${totals.saldo.toLocaleString('it-IT')}</span>
-            </div>
-        </div>
+        <div class="glass-card fade-in" style="width:100%; max-width:1400px;">
+            ${getCardHeader(`GESTIONE: ${userName}`, "window.logout()")}
+            <div style="padding:2.5rem;">
+                ${renderPageHero(`Ristorante: ${userName}`, "Panoramica finanziaria in tempo reale.", "DASHBOARD")}
+                <div class="stat-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; width: 100%; max-width: 1400px; margin-bottom: 3.5rem;">
+                    <div class="stat-card" style="padding: 2.5rem; border-radius: 32px; background: rgba(255,255,255,0.4); border: 1px solid var(--glass-border); border-left:5px solid #27ae60;"><span class="stat-label" style="color: var(--eco-text-body); font-size: 0.9rem; font-weight: 800; text-transform: uppercase;">Entrate Totali</span><span class="stat-value" style="font-size: 2.5rem; font-weight: 800; color: var(--eco-text-title);">€ ${totals.entrate.toLocaleString('it-IT')}</span></div>
+                    <div class="stat-card" style="padding: 2.5rem; border-radius: 32px; background: rgba(255,255,255,0.4); border: 1px solid var(--glass-border); border-left:5px solid #e67e22;"><span class="stat-label" style="color: var(--eco-text-body); font-size: 0.9rem; font-weight: 800; text-transform: uppercase;">Uscite Totali</span><span class="stat-value" style="font-size: 2.5rem; font-weight: 800; color: var(--eco-text-title);">€ ${totals.uscite.toLocaleString('it-IT')}</span></div>
+                    <div class="stat-card" style="padding: 2.5rem; border-radius: 32px; background: rgba(255,255,255,0.4); border: 1px solid var(--glass-border); border-left:5px solid var(--eco-accent);"><span class="stat-label" style="color: var(--eco-text-body); font-size: 0.9rem; font-weight: 800; text-transform: uppercase;">Saldo Netto</span><span class="stat-value" style="font-size: 2.5rem; font-weight: 800; color: var(--eco-text-title);">€ ${totals.saldo.toLocaleString('it-IT')}</span></div>
+                </div>
 
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; width: 100%; max-width: 1200px; margin-top: 2.5rem;">
             <div class="glass-card" style="padding: 1.5rem;">

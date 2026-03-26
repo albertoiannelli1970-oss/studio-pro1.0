@@ -47,6 +47,7 @@ window.renderRegForm = renderRegForm;
 window.completeOnboarding = completeOnboarding;
 window.generatePDF = generatePDF;
 window.syncToCloud = syncToCloud;
+window.fetchDataFromCloud = fetchDataFromCloud;
 window.initSupabase = initSupabase;
 window.logout = logout;
 window.showSection = showSection;
@@ -131,11 +132,9 @@ window.addEventListener('DOMContentLoaded', () => {
         if (mainShell) {
             mainShell.style.display = 'grid';
             updateNavIcons();
-            alert("DEBUG: Chiamo initSupabase ora...");
             initSupabase(); 
             renderDashboard();
         }
-    } else {
-        alert("DEBUG: Utente non trovato in localStorage. Forse devi rifare l'onboarding.");
     }
 });
+

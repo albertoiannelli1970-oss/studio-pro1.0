@@ -3,15 +3,15 @@
 class CategoryManager {
     static onDataChange = null;
     constructor() {
-        const stored = JSON.parse(localStorage.getItem('pn_categories'));
+        const stored = JSON.parse(localStorage.getItem('pn_cat_ristorante')) || JSON.parse(localStorage.getItem('pn_categories'));
         if (stored) {
             this.categories = this.migrate(stored);
         } else {
             this.categories = [
-                { id: 1, name: 'Alimentari', subcategories: [{ name: 'Spesa', details: {} }, { name: 'Ristorante', details: {} }] },
-                { id: 2, name: 'Trasporti', subcategories: [{ name: 'Carburante', details: {} }, { name: 'Mezzi Pubblici', details: {} }, { name: 'Manutenzione', details: {} }] },
-                { id: 3, name: 'Casa', subcategories: [{ name: 'Affitto/Mutuo', details: {} }, { name: 'Bollette', details: {} }, { name: 'Arredamento', details: {} }] },
-                { id: 4, name: 'Lavoro', subcategories: [{ name: 'Stipendio', details: {} }, { name: 'Bonus', details: {} }, { name: 'Rimborso Spese', details: {} }] }
+                { id: 1, name: 'Acquisti', subcategories: [{ name: 'Materie Prime', details: {} }, { name: 'Bevande', details: {} }, { name: 'Materiale Consumo', details: {} }, { name: 'Alimentari', details: {} }] },
+                { id: 2, name: 'Personale', subcategories: [{ name: 'Stipendi', details: {} }, { name: 'Contributi', details: {} }, { name: 'TFR', details: {} }, { name: 'Assicurazioni', details: {} }] },
+                { id: 3, name: 'Utenze', subcategories: [{ name: 'Luce', details: {} }, { name: 'Gas', details: {} }, { name: 'Acqua', details: {} }, { name: 'Rifiuti', details: {} }, { name: 'Internet', details: {} }] },
+                { id: 4, name: 'Incassi', subcategories: [{ name: 'Settimanale', details: {} }, { name: 'Weekend', details: {} }, { name: 'Eventi/Feste', details: {} }, { name: 'Asporto', details: {} }] }
             ];
             this.save();
         }
@@ -28,7 +28,8 @@ class CategoryManager {
     }
 
     save() {
-        localStorage.setItem('pn_categories', JSON.stringify(this.categories));
+        localStorage.setItem('pn_cat_ristorante', JSON.stringify(this.categories));
+        localStorage.setItem('pn_categories', JSON.stringify(this.categories)); // Backward compatibility
         if (CategoryManager.onDataChange) CategoryManager.onDataChange('categories');
     }
 
@@ -88,11 +89,12 @@ class CategoryManager {
 
 class TransactionManager {
     constructor() {
-        this.transactions = JSON.parse(localStorage.getItem('pn_transactions')) || [];
+        this.transactions = JSON.parse(localStorage.getItem('pn_trx_ristorante')) || JSON.parse(localStorage.getItem('pn_transactions')) || [];
     }
 
     save() {
-        localStorage.setItem('pn_transactions', JSON.stringify(this.transactions));
+        localStorage.setItem('pn_trx_ristorante', JSON.stringify(this.transactions));
+        localStorage.setItem('pn_transactions', JSON.stringify(this.transactions)); // Backward compatibility
         if (CategoryManager.onDataChange) CategoryManager.onDataChange('transactions');
     }
 
