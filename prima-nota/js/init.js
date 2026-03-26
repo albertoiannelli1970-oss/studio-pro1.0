@@ -71,7 +71,14 @@ function showSection(name) {
         if (btn.id === `nav-${name}`) btn.classList.add('active');
     });
 
+    // Auto-collapse sidebar on mobile after selection
+    if (window.innerWidth <= 1024) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) sidebar.classList.add('collapsed');
+    }
+
     switch(name) {
+
         case 'onboarding': renderOnboarding(); break;
         case 'dashboard': renderDashboard(); break;
         case 'categorie': renderCategories(); break;
@@ -131,9 +138,17 @@ window.addEventListener('DOMContentLoaded', () => {
         if (mainShell) {
             mainShell.style.display = 'grid';
             updateNavIcons();
+
+            // Initial mobile check
+            if (window.innerWidth <= 1024) {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) sidebar.classList.add('collapsed');
+            }
+
             initSupabase(); 
             renderDashboard();
         }
     }
 });
+
 
