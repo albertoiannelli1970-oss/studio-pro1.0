@@ -92,7 +92,7 @@ function showOffice() {
           <div class="glass-card" style="padding: 2.5rem; border-top: 4px solid var(--color-yellow);">
             <h2 style="margin-bottom: 1.5rem;">📁 Le Mie App</h2>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-              <div class="glass-card" style="padding: 1.5rem; background: rgba(255, 223, 0, 0.05); border: 1px solid var(--pn-yellow); text-align: center; cursor: pointer;" onclick="window.open('prima-nota/index.html')">
+              <div class="glass-card" style="padding: 1.5rem; background: rgba(255, 223, 0, 0.05); border: 1px solid var(--pn-yellow); text-align: center; cursor: pointer;" onclick="window.location.href='prima-nota/index.html'">
                 <p style="font-size: 2rem; margin-bottom: 0.5rem;">📈</p>
                 <h3>Prima Nota Pro</h3>
                 <p style="font-size: 0.7rem; color: var(--text-secondary);">v1.0.0 Stable</p>
