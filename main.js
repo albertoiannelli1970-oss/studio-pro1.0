@@ -138,3 +138,24 @@ function showOffice() {
     </div>
   `;
 }
+
+window.startHub = () => {
+  const sections = ['why', 'apps', 'status-section', 'features-section', 'hub-nav', 'hub-login-btn'];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (id === 'hub-nav') ? 'flex' : 'block';
+  });
+  
+  const startBtn = document.getElementById('main-start-btn');
+  if (startBtn) startBtn.style.display = 'none';
+  
+  // Smooth scroll to apps
+  document.getElementById('apps').scrollIntoView({ behavior: 'smooth' });
+};
+
+// Check if already "started"
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('pn_user_name')) {
+    window.startHub();
+  }
+});

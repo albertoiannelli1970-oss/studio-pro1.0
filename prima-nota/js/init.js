@@ -36,11 +36,14 @@ window.handleSubcategorySearch = handleSubcategorySearch;
 window.handleSubcategoryChange = handleSubcategoryChange;
 window.renderStudio = renderStudio;
 window.renderStampa = renderStampa;
-window.renderPrivacy = renderPrivacy;
+window.renderPrivacySection = renderPrivacy; // Renamed to avoid confusion with onboarding privacy
 window.renderContatti = renderContatti;
 window.startOnboarding = startOnboarding;
 window.renderOnboarding = renderOnboarding;
+window.renderPrivacyPolicy = renderPrivacyPolicy;
+window.finalizeOnboarding = finalizeOnboarding;
 window.selectProfile = selectProfile;
+
 window.enterApp = enterApp;
 window.renderRegForm = renderRegForm;
 window.completeOnboarding = completeOnboarding;

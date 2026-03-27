@@ -122,10 +122,37 @@ function renderRegForm(type) {
 function completeOnboarding(type) {
     const name = document.getElementById('user-name').value;
     if (!name) return alert('Inserisci un nome per continuare.');
+    
+    // Step 2: Anagrafe completed, now show Privacy
+    window.renderPrivacyPolicy(type, name);
+}
+
+window.renderPrivacyPolicy = (type, name) => {
+    const form = document.getElementById('profile-form');
+    form.innerHTML = `
+        <h3 style="margin-bottom: 1.5rem; color: var(--pn-indigo);">Informativa sulla Privacy</h3>
+        <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; font-size: 0.85rem; max-height: 200px; overflow-y: auto; text-align: left; line-height: 1.6; margin-bottom: 1.5rem;">
+            <p><strong>Trattamento Dati Personali (GDPR)</strong></p>
+            <p>I tuoi dati (Nome/Ragione Sociale: ${name}) verranno salvati localmente sul tuo dispositivo per permettere il funzionamento dell'applicazione. Se attivi la sincronizzazione Cloud, i dati verranno crittografati e salvati in modo sicuro sui server Supabase.</p>
+            <p>Non verranno mai ceduti a terzi per scopi commerciali.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem;">
+            <input type="checkbox" id="privacy-check" style="width: 20px; height: 20px;">
+            <label for="privacy-check" style="font-size: 0.9rem; color: #64748b;">Accetto i termini e l'informativa privacy</label>
+        </div>
+        <button class="btn-indigo" style="width: 100%;" onclick="window.finalizeOnboarding('${type}', '${name}')">ACCETTA E COMINCIA</button>
+        <button class="btn-indigo" style="background: rgba(255,255,255,0.05); color: #64748b; margin-top: 0.5rem;" onclick="window.renderRegForm('${type}')">INDIETRO</button>
+    `;
+};
+
+window.finalizeOnboarding = (type, name) => {
+    if (!document.getElementById('privacy-check').checked) {
+        return alert("Devi accettare l'informativa sulla privacy per continuare.");
+    }
     localStorage.setItem('pn_user_type', type);
     localStorage.setItem('pn_user_name', name);
     window.showSection('dashboard');
-}
+};
 
 window.showCloudRecovery = () => {
     const name = prompt("Inserisci il Nome del tuo Ristorante/Attività salvato nel Cloud:");
@@ -141,4 +168,5 @@ window.executeCloudRecovery = async (name) => {
         location.reload(); // Refresh to apply all modular data
     }
 };
+
 

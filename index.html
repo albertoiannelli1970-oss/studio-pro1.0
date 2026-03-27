@@ -18,7 +18,7 @@
                     <span style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em; color: var(--eco-text-title);">APPSTUDIO <span style="color: var(--eco-accent);">PRO 1.0 (R)</span></span>
                 </div>
                 
-                <nav class="nav-links">
+                <nav class="nav-links" id="hub-nav" style="display: none;">
                     <a href="javascript:void(0)" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">Scopri l'Ecosistema</a>
                     <a href="javascript:void(0)" onclick="document.getElementById('apps').scrollIntoView({behavior:'smooth'})">Tutte le App</a>
                     <a href="javascript:void(0)" onclick="window.showHubModal('cloud-settings')" style="color: var(--eco-accent); font-weight: 800;">⚙️ Impostazioni Cloud</a>
@@ -34,7 +34,7 @@
                         <div class="win-dot yellow" title="Iconizza" onclick="window.toggleHubWindow(document.getElementById('app-container'), 'minimized')"></div>
                         <div class="win-dot green" title="Ingrandisci" onclick="window.toggleHubWindow(document.getElementById('app-container'), 'maximized')"></div>
                     </div>
-                    <button class="btn-primary" style="padding: 0.8rem 2rem; font-size: 0.9rem;" onclick="window.showHubModal('login')">LOGIN</button>
+                    <button class="btn-primary" id="hub-login-btn" style="padding: 0.8rem 2rem; font-size: 0.9rem; display: none;" onclick="window.showHubModal('login')">LOGIN</button>
                 </div>
             </div>
         </header>
@@ -50,13 +50,13 @@
                     APPSTUDIO PRO 1.0 (R): LA PIATTAFORMA UNICA PER CONNETTERE TUTTE LE TUE APPLICAZIONI.
                 </p>
                 <div style="display: flex; gap: 1.5rem; justify-content: center;">
-                    <button class="btn-primary" onclick="document.getElementById('apps').scrollIntoView({behavior: 'smooth'})">COMINCIA ORA</button>
+                    <button class="btn-primary" id="main-start-btn" onclick="window.startHub()">COMINCIA ORA</button>
                     <button class="btn-secondary" style="background: rgba(255,255,255,0.2); border: 1px solid var(--eco-glass-border);" onclick="localStorage.clear(); location.reload();">RESET DATI</button>
                 </div>
             </section>
 
             <!-- Why Section -->
-            <section id="why" class="container fade-in" style="padding-top: 5rem;">
+            <section id="why" class="container fade-in" style="display: none; padding-top: 5rem;">
                 <h2 style="text-align: center; color: var(--eco-accent); font-weight: 800; letter-spacing: 0.1em; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 3rem;">Perchè APPSTUDIO PRO 1.0 (R)?</h2>
                 <div class="feature-grid">
                     <div class="feature-card">
@@ -78,7 +78,7 @@
             </section>
 
             <!-- Status Section -->
-            <section class="status-section container fade-in">
+            <section class="status-section container fade-in" id="status-section" style="display: none;">
                 <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--eco-text-title); margin-bottom: 2rem;">Il Tuo Ecosistema in Azione</h2>
                 <div class="status-badge">
                     <div class="pulse-dot"></div>
@@ -86,7 +86,7 @@
                 </div>
             </section>
 
-            <section id="apps" class="container fade-in" style="padding: 100px 0;">
+            <section id="apps" class="container fade-in" style="display: none; padding: 100px 0;">
                 <h2 style="font-size: 3rem; font-weight: 800; color: var(--eco-text-title); text-align: center; margin-bottom: 5rem;">Sfoglia l'Ecosistema</h2>
                 
                 <div class="app-grid">
@@ -130,7 +130,7 @@
             </section>
 
             <!-- Features Section -->
-            <section class="container fade-in" style="padding-bottom: 150px;">
+            <section class="container fade-in" id="features-section" style="display: none; padding-bottom: 150px;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem;">
                     <div class="glass-card" style="padding: 3rem; text-align: center;">
                         <h4 style="font-size: 1.4rem; color: var(--eco-text-title); margin-bottom: 1rem; font-weight: 800;">INTEGRAZIONE SEMPLICE</h4>
