@@ -152,6 +152,9 @@
             <div class="nav-link" id="nav-comunicazioni" onclick="switchView('comunicazioni', this)">
                 <span class="nav-emoji">💬</span> Comunicazioni
             </div>
+            <div class="nav-link" id="nav-stampa" onclick="switchView('stampa', this)">
+                <span class="nav-emoji">🖨️</span> Stampa
+            </div>
         </nav>
         <div id="connection-status">
             <span class="sync-dot" style="background:#ad8b6a"></span> Locale Autonomo
@@ -188,7 +191,7 @@ function switchView(view, el) {
     document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
     if (el) el.classList.add('active');
     if (window.innerWidth <= 1024) document.getElementById('sidebar').classList.remove('open');
-    const views = { dashboard: renderDashboard, anagrafica: renderAnagrafica, presenze: renderPresenze, rubrica: renderRubrica, produttivita: renderProduttivita, comunicazioni: renderComunicazioni };
+    const views = { dashboard: renderDashboard, anagrafica: renderAnagrafica, presenze: renderPresenze, rubrica: renderRubrica, produttivita: renderProduttivita, comunicazioni: renderComunicazioni, stampa: renderStampa };
     (views[view] || renderDashboard)();
 }
 
@@ -561,21 +564,52 @@ function renderComunicazioni() {
         <div class="card">
             <div class="card-title">Canali di Comunicazione Rapida</div>
             <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:1rem;">
-                <a href="https://web.whatsapp.com" target="_blank" class="comm-card">
-                    <div class="comm-icon">💬</div>
-                    <div><strong>WhatsApp</strong><br><small style="color:var(--hr-muted);">Messaggistica istantanea</small></div>
+                <a href="https://web.whatsapp.com" target="_blank" class="comm-card" style="border-color:rgba(37,211,102,0.3);">
+                    <div class="comm-icon" style="background:rgba(37,211,102,0.1);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+                    <div><strong style="color:#25D366;">WhatsApp</strong><br><small style="color:var(--hr-muted);">Messaggistica istantanea</small></div>
                 </a>
-                <a href="https://web.telegram.org" target="_blank" class="comm-card">
-                    <div class="comm-icon">✈️</div>
-                    <div><strong>Telegram</strong><br><small style="color:var(--hr-muted);">Canali e gruppi</small></div>
+                <a href="https://web.telegram.org" target="_blank" class="comm-card" style="border-color:rgba(0,136,204,0.3);">
+                    <div class="comm-icon" style="background:rgba(0,136,204,0.1);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0088CC"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div>
+                    <div><strong style="color:#0088CC;">Telegram</strong><br><small style="color:var(--hr-muted);">Canali e gruppi</small></div>
                 </a>
-                <a href="mailto:" class="comm-card">
-                    <div class="comm-icon">📧</div>
-                    <div><strong>Email Aziendale</strong><br><small style="color:var(--hr-muted);">Comunicazioni formali</small></div>
+                <a href="https://www.facebook.com" target="_blank" class="comm-card" style="border-color:rgba(24,119,242,0.3);">
+                    <div class="comm-icon" style="background:rgba(24,119,242,0.1);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+                    <div><strong style="color:#1877F2;">Facebook</strong><br><small style="color:var(--hr-muted);">Social aziendale</small></div>
                 </a>
-                <a href="https://meet.google.com" target="_blank" class="comm-card">
-                    <div class="comm-icon">📹</div>
-                    <div><strong>Video Conferenza</strong><br><small style="color:var(--hr-muted);">Riunioni a distanza</small></div>
+                <a href="mailto:" class="comm-card" style="border-color:rgba(234,67,53,0.3);">
+                    <div class="comm-icon" style="background:rgba(234,67,53,0.1);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#EA4335"><path d="M20 18h-2V9.25L12 13 6 9.25V18H4V6h1.2l6.8 4.25L18.8 6H20m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg></div>
+                    <div><strong style="color:#EA4335;">Gmail</strong><br><small style="color:var(--hr-muted);">Email aziendale</small></div>
+                </a>
+                <a href="https://meet.google.com" target="_blank" class="comm-card" style="border-color:rgba(0,172,105,0.3);">
+                    <div class="comm-icon" style="background:rgba(0,172,105,0.1);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#00AC69"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+                    <div><strong style="color:#00AC69;">Google Meet</strong><br><small style="color:var(--hr-muted);">Video conferenza</small></div>
+                </a>
+                <a href="javascript:void(0)" onclick="window.open(navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome') ? 'https://www.apple.com/safari/' : 'https://www.google.com', '_blank')" class="comm-card" style="border-color:rgba(66,133,244,0.3);">
+                    <div class="comm-icon" style="background:rgba(66,133,244,0.1);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#4285F4"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+                    <div><strong style="color:#4285F4;">Browser Web</strong><br><small style="color:var(--hr-muted);">Naviga con il tuo browser</small></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📲 App Consigliate</div>
+            <p style="color:var(--hr-muted); font-size:0.85rem; margin-bottom:1rem;">Scarica le app che possono potenziare la tua attività</p>
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:1rem;">
+                <a href="https://www.linkedin.com" target="_blank" class="comm-card" style="border-color:rgba(10,102,194,0.3);">
+                    <div class="comm-icon" style="background:rgba(10,102,194,0.1);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+                    <div><strong style="color:#0A66C2;">LinkedIn</strong><br><small style="color:var(--hr-muted);">Network professionale</small></div>
+                </a>
+                <a href="https://www.subito.it" target="_blank" class="comm-card" style="border-color:rgba(255,89,0,0.3);">
+                    <div class="comm-icon" style="background:rgba(255,89,0,0.1); font-size:1.5rem; font-weight:900; color:#FF5900;">S</div>
+                    <div><strong style="color:#FF5900;">Subito.it</strong><br><small style="color:var(--hr-muted);">Annunci e forniture</small></div>
+                </a>
+                <a href="https://www.indeed.com/it" target="_blank" class="comm-card" style="border-color:rgba(0,51,160,0.3);">
+                    <div class="comm-icon" style="background:rgba(0,51,160,0.1); font-size:1.5rem; font-weight:900; color:#003FA0;">in</div>
+                    <div><strong style="color:#003FA0;">Indeed</strong><br><small style="color:var(--hr-muted);">Ricerca personale</small></div>
+                </a>
+                <a href="https://www.paginegialle.it" target="_blank" class="comm-card" style="border-color:rgba(255,204,0,0.3);">
+                    <div class="comm-icon" style="background:rgba(255,204,0,0.15); font-size:1.5rem; font-weight:900; color:#CC9900;">PG</div>
+                    <div><strong style="color:#CC9900;">Pagine Gialle</strong><br><small style="color:var(--hr-muted);">Elenco fornitori</small></div>
                 </a>
             </div>
         </div>
@@ -609,6 +643,84 @@ function postMessage() {
     saveData();
     document.querySelector('.modal-overlay').remove();
     renderComunicazioni();
+}
+
+// ═══ STAMPA ═══
+function renderStampa() {
+    document.getElementById('view-container').innerHTML = `
+        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.3rem;">Stampa Documenti</h2>
+        <p style="color:var(--hr-muted); margin-bottom:2rem;">Genera e stampa report HR professionali</p>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:1.2rem;">
+            <div class="card" style="cursor:pointer; transition:all 0.2s;" onclick="printEmployeeList()" onmouseover="this.style.borderColor='var(--hr-primary)'" onmouseout="this.style.borderColor=''">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">📋</div>
+                <div class="card-title">Elenco Dipendenti</div>
+                <p style="font-size:0.85rem; color:var(--hr-muted);">Lista completa con anagrafica, mansione e contratto.</p>
+            </div>
+            <div class="card" style="cursor:pointer; transition:all 0.2s;" onclick="printAttendanceReport()" onmouseover="this.style.borderColor='var(--hr-primary)'" onmouseout="this.style.borderColor=''">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">📅</div>
+                <div class="card-title">Report Presenze</div>
+                <p style="font-size:0.85rem; color:var(--hr-muted);">Riepilogo presenze, ferie e assenze del mese.</p>
+            </div>
+            <div class="card" style="cursor:pointer; transition:all 0.2s;" onclick="printProductivityReport()" onmouseover="this.style.borderColor='var(--hr-primary)'" onmouseout="this.style.borderColor=''">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">📈</div>
+                <div class="card-title">Report Produttività</div>
+                <p style="font-size:0.85rem; color:var(--hr-muted);">Classifica merito e andamento produttivo annuale.</p>
+            </div>
+            <div class="card" style="cursor:pointer; transition:all 0.2s;" onclick="printRubrica()" onmouseover="this.style.borderColor='var(--hr-primary)'" onmouseout="this.style.borderColor=''">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">📇</div>
+                <div class="card-title">Rubrica Telefonica</div>
+                <p style="font-size:0.85rem; color:var(--hr-muted);">Stampa la rubrica dei contatti aziendali.</p>
+            </div>
+        </div>
+    `;
+}
+
+function openPrintWindow(title, bodyHtml) {
+    const w = window.open('', '_blank', 'width=800,height=600');
+    w.document.write(`<!DOCTYPE html><html><head><title>${title}</title>
+    <style>body{font-family:'Segoe UI',Tahoma,sans-serif;padding:40px;color:#1e2418;}
+    h1{font-size:1.5rem;border-bottom:2px solid #ad8b6a;padding-bottom:10px;margin-bottom:20px;color:#7a5c3c;}
+    table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+    th{text-align:left;padding:8px;background:#f5f2ed;border-bottom:2px solid #ddd;font-size:0.7rem;text-transform:uppercase;color:#6b7264;}
+    td{padding:8px;border-bottom:1px solid #eee;}
+    .footer{margin-top:30px;text-align:center;font-size:0.7rem;color:#999;}
+    @media print{body{padding:20px;}}
+    </style></head><body>${bodyHtml}
+    <div class="footer">© 2026 AppStudio Pro 1.0® — Gestione Personale</div>
+    </body></html>`);
+    w.document.close();
+    setTimeout(() => { w.print(); }, 300);
+}
+
+function printEmployeeList() {
+    if(employees.length===0) return alert('Nessun dipendente da stampare.');
+    const rows = employees.map(e => `<tr><td>${e.nome} ${e.cognome}</td><td>${e.mansione||'-'}</td><td>${e.contratto||'-'}</td><td>${e.cellulare||'-'}</td><td>${e.email||'-'}</td></tr>`).join('');
+    openPrintWindow('Elenco Dipendenti', `<h1>👤 Elenco Dipendenti</h1><table><thead><tr><th>Nome</th><th>Mansione</th><th>Contratto</th><th>Cellulare</th><th>Email</th></tr></thead><tbody>${rows}</tbody></table>`);
+}
+
+function printAttendanceReport() {
+    if(employees.length===0) return alert('Nessun dipendente registrato.');
+    const month = new Date().toISOString().slice(0,7);
+    const rows = employees.map((e,i) => {
+        const recs = attendance.filter(a => a.empIdx===i && a.date.startsWith(month));
+        const p=recs.filter(r=>r.status==='presente').length, f=recs.filter(r=>r.status==='ferie').length, a2=recs.filter(r=>r.status==='assente'||r.status==='permesso').length;
+        return `<tr><td>${e.nome} ${e.cognome}</td><td>${p}</td><td>${f}</td><td>${a2}</td></tr>`;
+    }).join('');
+    openPrintWindow('Report Presenze', `<h1>📅 Report Presenze — ${month}</h1><table><thead><tr><th>Dipendente</th><th>Presenze</th><th>Ferie</th><th>Assenze</th></tr></thead><tbody>${rows}</tbody></table>`);
+}
+
+function printProductivityReport() {
+    if(employees.length===0) return alert('Nessun dipendente registrato.');
+    const sorted = employees.map(e=>({...e, avg: Math.round((e.produttivita||[]).reduce((s,v)=>s+v,0)/((e.produttivita||[]).length||1))})).sort((a,b)=>b.avg-a.avg);
+    const rows = sorted.map((e,i) => `<tr><td>${i+1}</td><td>${e.nome} ${e.cognome}</td><td>${e.avg}%</td><td>${i<3?'🎁 Bonus':'-'}</td></tr>`).join('');
+    openPrintWindow('Report Produttività', `<h1>📈 Classifica Merito Annuale</h1><table><thead><tr><th>Pos.</th><th>Dipendente</th><th>Media</th><th>Benefit</th></tr></thead><tbody>${rows}</tbody></table>`);
+}
+
+function printRubrica() {
+    if(employees.length===0) return alert('Nessun contatto da stampare.');
+    const rows = employees.map(e => `<tr><td>${e.nome} ${e.cognome}</td><td>${e.mansione||'-'}</td><td>${e.cellulare||'-'}</td><td>${e.email||'-'}</td></tr>`).join('');
+    openPrintWindow('Rubrica Aziendale', `<h1>📇 Rubrica Aziendale</h1><table><thead><tr><th>Nome</th><th>Mansione</th><th>Cellulare</th><th>Email</th></tr></thead><tbody>${rows}</tbody></table>`);
 }
 
 // ═══ INIT ═══
