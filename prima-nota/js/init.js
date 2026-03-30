@@ -11,48 +11,43 @@ if (typeof CategoryManager !== 'undefined') {
 }
 
 // --- GLOBAL ATTACHMENTS ---
-window.renderDashboard = window.renderDashboard || renderDashboard;
-window.renderClienti = window.renderClienti || renderClienti;
-window.filterClients = window.filterClients || filterClients;
-window.showClientForm = window.showClientForm || showClientForm;
-window.confirmAddClient = window.confirmAddClient || confirmAddClient;
-window.renderCategories = window.renderCategories || renderCategories;
-window.showCatForm = window.showCatForm || showCatForm;
-window.confirmAddCat = window.confirmAddCat || confirmAddCat;
-window.editCat = window.editCat || editCat;
-window.confirmEditCat = window.confirmEditCat || confirmEditCat;
-window.deleteCat = window.deleteCat || deleteCat;
-window.showSubForm = window.showSubForm || showSubForm;
-window.confirmAddSub = window.confirmAddSub || confirmAddSub;
-window.editSub = window.editSub || editSub;
-window.confirmEditSub = window.confirmEditSub || confirmEditSub;
-window.deleteSub = window.deleteSub || deleteSub;
-window.renderSubcategories = window.renderSubcategories || renderSubcategories;
-window.showGlobalSubForm = window.showGlobalSubForm || showGlobalSubForm;
-window.confirmAddGlobalSub = window.confirmAddGlobalSub || confirmAddGlobalSub;
-window.showTransactionForm = window.showTransactionForm || showTransactionForm;
-window.confirmAddTransaction = window.confirmAddTransaction || confirmAddTransaction;
-window.handleSubcategorySearch = window.handleSubcategorySearch || handleSubcategorySearch;
-window.handleSubcategoryChange = window.handleSubcategoryChange || handleSubcategoryChange;
-window.renderStudio = window.renderStudio || renderStudio;
-window.renderStampa = window.renderStampa || renderStampa;
-window.renderPrivacySection = window.renderPrivacy || renderPrivacy; 
-window.renderContatti = window.renderContatti || renderContatti;
-window.startOnboarding = window.startOnboarding || startOnboarding;
-window.renderOnboarding = window.renderOnboarding || renderOnboarding;
-window.selectProfile = window.selectProfile || selectProfile;
+window.renderDashboard = window.renderDashboard || (typeof renderDashboard !== 'undefined' ? renderDashboard : () => { console.error("renderDashboard missing"); });
+window.renderClienti = window.renderClienti || (typeof renderClienti !== 'undefined' ? renderClienti : () => {});
+window.renderInventory = window.renderInventory || (typeof renderInventory !== 'undefined' ? renderInventory : () => {});
+window.renderCatConfig = window.renderCatConfig || (typeof renderCatConfig !== 'undefined' ? renderCatConfig : () => {});
+window.renderSuppliers = window.renderSuppliers || (typeof renderSuppliers !== 'undefined' ? renderSuppliers : () => {});
+window.renderPrivacySection = window.renderPrivacy || (typeof renderPrivacy !== 'undefined' ? renderPrivacy : () => {});
+window.renderContatti = window.renderContatti || (typeof renderContatti !== 'undefined' ? renderContatti : () => {});
 
-window.enterApp = window.enterApp || enterApp;
-window.renderRegForm = window.renderRegForm || renderRegForm;
-window.completeOnboarding = window.completeOnboarding || completeOnboarding;
-window.generatePDF = window.generatePDF || generatePDF;
-window.syncToCloud = window.syncToCloud || syncToCloud;
-window.fetchDataFromCloud = window.fetchDataFromCloud || fetchDataFromCloud;
-window.initSupabase = window.initSupabase || initSupabase;
-window.logout = window.logout || logout;
-window.showSection = window.showSection || showSection;
+// Routing & Global Section management
+window.showSection = (name) => {
+    if (typeof mainContent === 'undefined' || !mainContent) return;
+    mainContent.className = 'fade-in';
+    document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.id === `nav-${name}`) btn.classList.add('active');
+    });
 
-window.toggleMinimize = (el) => {
+    if (window.innerWidth <= 1024) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) sidebar.classList.add('collapsed');
+    }
+
+    switch(name) {
+        case 'onboarding': if(window.renderOnboarding) window.renderOnboarding(); break;
+        case 'dashboard': if(window.renderDashboard) window.renderDashboard(); break;
+        case 'inventory': if(window.renderInventory) window.renderInventory(); break;
+        case 'catconfig': if(window.renderCatConfig) window.renderCatConfig(); break;
+        case 'suppliers': if(window.renderSuppliers) window.renderSuppliers(); break;
+        default: if(window.renderDashboard) window.renderDashboard();
+    }
+};
+
+window.logout = () => {
+    localStorage.clear();
+    location.reload();
+};
+
 
     const card = el.closest('.glass-card') || el.closest('.form-card');
     if(card) card.classList.toggle('minimized');

@@ -26,7 +26,7 @@
 * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 html, body {
     height: 100%; margin: 0; padding: 0;
-    overflow: hidden; 
+    overflow: auto; 
     background: url('bg-organic.png') no-repeat center center fixed;
     background-size: cover;
     color: var(--eco-text-body); font-family: 'Outfit', sans-serif;
@@ -42,8 +42,7 @@ body::before {
 
 #app-shell { 
     display: flex; height: 100vh; width: 100vw; 
-    background: rgba(242, 239, 234, 0.45); /* Soft beige glass overlay */
-    backdrop-filter: blur(8px);
+    background: transparent;
 }
 
 /* --- SIDEBAR --- */
