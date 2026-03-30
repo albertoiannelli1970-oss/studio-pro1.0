@@ -11,52 +11,49 @@ if (typeof CategoryManager !== 'undefined') {
 }
 
 // --- GLOBAL ATTACHMENTS ---
-window.renderDashboard = renderDashboard;
-window.renderInventory = () => {}; // Placeholder to be replaced by module
-window.renderCatConfig = () => {}; // Placeholder
-window.renderSuppliers = () => {}; // Placeholder
-window.renderClienti = renderClienti;
-window.filterClients = filterClients;
-window.showClientForm = showClientForm;
-window.confirmAddClient = confirmAddClient;
-window.renderCategories = renderCategories;
-window.showCatForm = showCatForm;
-window.confirmAddCat = confirmAddCat;
-window.editCat = editCat;
-window.confirmEditCat = confirmEditCat;
-window.deleteCat = deleteCat;
-window.showSubForm = showSubForm;
-window.confirmAddSub = confirmAddSub;
-window.editSub = editSub;
-window.confirmEditSub = confirmEditSub;
-window.deleteSub = deleteSub;
-window.renderSubcategories = renderSubcategories;
-window.showGlobalSubForm = showGlobalSubForm;
-window.confirmAddGlobalSub = confirmAddGlobalSub;
-window.showTransactionForm = showTransactionForm;
-window.confirmAddTransaction = confirmAddTransaction;
-window.handleSubcategorySearch = handleSubcategorySearch;
-window.handleSubcategoryChange = handleSubcategoryChange;
-window.renderStudio = renderStudio;
-window.renderStampa = renderStampa;
-window.renderPrivacySection = renderPrivacy; // Renamed to avoid confusion with onboarding privacy
-window.renderContatti = renderContatti;
-window.startOnboarding = startOnboarding;
-window.renderOnboarding = renderOnboarding;
-window.renderPrivacyPolicy = renderPrivacyPolicy;
-window.finalizeOnboarding = finalizeOnboarding;
-window.selectProfile = selectProfile;
+window.renderDashboard = window.renderDashboard || renderDashboard;
+window.renderClienti = window.renderClienti || renderClienti;
+window.filterClients = window.filterClients || filterClients;
+window.showClientForm = window.showClientForm || showClientForm;
+window.confirmAddClient = window.confirmAddClient || confirmAddClient;
+window.renderCategories = window.renderCategories || renderCategories;
+window.showCatForm = window.showCatForm || showCatForm;
+window.confirmAddCat = window.confirmAddCat || confirmAddCat;
+window.editCat = window.editCat || editCat;
+window.confirmEditCat = window.confirmEditCat || confirmEditCat;
+window.deleteCat = window.deleteCat || deleteCat;
+window.showSubForm = window.showSubForm || showSubForm;
+window.confirmAddSub = window.confirmAddSub || confirmAddSub;
+window.editSub = window.editSub || editSub;
+window.confirmEditSub = window.confirmEditSub || confirmEditSub;
+window.deleteSub = window.deleteSub || deleteSub;
+window.renderSubcategories = window.renderSubcategories || renderSubcategories;
+window.showGlobalSubForm = window.showGlobalSubForm || showGlobalSubForm;
+window.confirmAddGlobalSub = window.confirmAddGlobalSub || confirmAddGlobalSub;
+window.showTransactionForm = window.showTransactionForm || showTransactionForm;
+window.confirmAddTransaction = window.confirmAddTransaction || confirmAddTransaction;
+window.handleSubcategorySearch = window.handleSubcategorySearch || handleSubcategorySearch;
+window.handleSubcategoryChange = window.handleSubcategoryChange || handleSubcategoryChange;
+window.renderStudio = window.renderStudio || renderStudio;
+window.renderStampa = window.renderStampa || renderStampa;
+window.renderPrivacySection = window.renderPrivacy || renderPrivacy; 
+window.renderContatti = window.renderContatti || renderContatti;
+window.startOnboarding = window.startOnboarding || startOnboarding;
+window.renderOnboarding = window.renderOnboarding || renderOnboarding;
+window.selectProfile = window.selectProfile || selectProfile;
 
-window.enterApp = enterApp;
-window.renderRegForm = renderRegForm;
-window.completeOnboarding = completeOnboarding;
-window.generatePDF = generatePDF;
-window.syncToCloud = syncToCloud;
-window.fetchDataFromCloud = fetchDataFromCloud;
-window.initSupabase = initSupabase;
-window.logout = logout;
-window.showSection = showSection;
+window.enterApp = window.enterApp || enterApp;
+window.renderRegForm = window.renderRegForm || renderRegForm;
+window.completeOnboarding = window.completeOnboarding || completeOnboarding;
+window.generatePDF = window.generatePDF || generatePDF;
+window.syncToCloud = window.syncToCloud || syncToCloud;
+window.fetchDataFromCloud = window.fetchDataFromCloud || fetchDataFromCloud;
+window.initSupabase = window.initSupabase || initSupabase;
+window.logout = window.logout || logout;
+window.showSection = window.showSection || showSection;
+
 window.toggleMinimize = (el) => {
+
     const card = el.closest('.glass-card') || el.closest('.form-card');
     if(card) card.classList.toggle('minimized');
 };
