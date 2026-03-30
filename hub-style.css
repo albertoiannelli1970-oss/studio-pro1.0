@@ -152,6 +152,113 @@ header {
   50% { transform: translateY(-20px); }
 }
 
+/* --- FRUIT SYSTEM (App Logos on Tree) --- */
+.fruit {
+    position: absolute;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.fruit-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    transition: transform 0.3s;
+}
+
+.fruit-label {
+    position: absolute;
+    bottom: -22px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(-5px);
+    padding: 3px 8px;
+    border-radius: 8px;
+}
+
+.fruit:hover .fruit-label {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fruit:hover .fruit-icon {
+    transform: scale(1.3);
+}
+
+.fruit:hover {
+    transform: scale(1.15);
+}
+
+/* MATURO - Frutto dorato, app completata */
+.fruit-mature {
+    background: radial-gradient(circle, rgba(255, 193, 7, 0.25), rgba(255, 152, 0, 0.1));
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.4), 0 0 40px rgba(255, 152, 0, 0.15);
+    animation: fruitGlow 3s ease-in-out infinite alternate;
+    border: 2px solid rgba(255, 193, 7, 0.3);
+}
+
+.fruit-mature .fruit-label {
+    background: rgba(255, 152, 0, 0.9);
+    color: #fff;
+}
+
+.fruit-mature:hover {
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.6), 0 0 60px rgba(255, 152, 0, 0.3);
+}
+
+@keyframes fruitGlow {
+    0% { box-shadow: 0 0 15px rgba(255, 193, 7, 0.3), 0 0 30px rgba(255, 152, 0, 0.1); }
+    100% { box-shadow: 0 0 25px rgba(255, 193, 7, 0.5), 0 0 50px rgba(255, 152, 0, 0.2); }
+}
+
+/* IN MATURAZIONE - Frutto verde, app in sviluppo */
+.fruit-growing {
+    background: radial-gradient(circle, rgba(93, 102, 76, 0.25), rgba(76, 175, 80, 0.1));
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.3), 0 0 30px rgba(93, 102, 76, 0.1);
+    animation: fruitRipen 4s ease-in-out infinite alternate;
+    border: 2px solid rgba(76, 175, 80, 0.3);
+}
+
+.fruit-growing .fruit-label {
+    background: rgba(93, 102, 76, 0.9);
+    color: #fff;
+}
+
+.fruit-growing .fruit-icon {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)) saturate(0.6);
+}
+
+.fruit-growing:hover {
+    box-shadow: 0 0 25px rgba(76, 175, 80, 0.5), 0 0 50px rgba(93, 102, 76, 0.2);
+}
+
+.fruit-growing:hover .fruit-icon {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)) saturate(1);
+}
+
+@keyframes fruitRipen {
+    0% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.2); border-color: rgba(76, 175, 80, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(139, 195, 74, 0.35); border-color: rgba(139, 195, 74, 0.3); }
+    100% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.3); border-color: rgba(76, 175, 80, 0.25); }
+}
+
+/* Mobile: frutti più piccoli */
+@media (max-width: 1024px) {
+    .fruit { width: 55px; height: 55px; }
+    .fruit-icon { font-size: 1.4rem; }
+    .fruit-label { font-size: 0.55rem; bottom: -18px; }
+}
+
 /* App Grid */
 .app-grid {
   display: grid;
