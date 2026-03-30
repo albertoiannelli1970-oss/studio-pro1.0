@@ -1,14 +1,14 @@
 :root {
-  --eco-primary: #f2f2ef;
-  --eco-accent: #5d664c;
-  --eco-accent-dark: #3e4433;
-  --eco-secondary: #8c6c4c;
-  --eco-secondary-light: #ad8b6a;
-  --eco-text-title: #2d3326;
-  --eco-text-body: #4a5142;
-  --eco-glass-bg: rgba(255, 255, 255, 0.5);
-  --eco-glass-border: rgba(93, 102, 76, 0.12);
-  --eco-shadow: 0 20px 50px rgba(93, 102, 76, 0.15);
+  --eco-primary: #e8e5df;
+  --eco-accent: #4a5142;
+  --eco-accent-dark: #2d3326;
+  --eco-secondary: #7a5c3c;
+  --eco-secondary-light: #9a7a5a;
+  --eco-text-title: #1e2418;
+  --eco-text-body: #3e4433;
+  --eco-glass-bg: rgba(255, 255, 255, 0.45);
+  --eco-glass-border: rgba(62, 68, 51, 0.15);
+  --eco-shadow: 0 20px 50px rgba(62, 68, 51, 0.2);
   --eco-radius: 40px;
 }
 
