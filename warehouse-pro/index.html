@@ -348,11 +348,16 @@ html, body {
 
 <script>
     // --- DATA MANAGEMENT & CLOUD SYNC ---
-    let supabase = null;
+    let supabaseClient = null;
     const SUR = localStorage.getItem('SUPABASE_URL');
     const SAK = localStorage.getItem('SUPABASE_KEY');
-    if (SUR && SAK) {
-        supabase = supabase.createClient(SUR, SAK);
+    
+    try {
+        if (SUR && SAK && window.supabase) {
+            supabaseClient = window.supabase.createClient(SUR, SAK);
+        }
+    } catch (e) {
+        console.warn("Supabase init failed:", e);
     }
 
     let categories = JSON.parse(localStorage.getItem('appstudio_warehouse_categories')) || [
@@ -374,12 +379,12 @@ html, body {
         localStorage.setItem('appstudio_warehouse_categories', JSON.stringify(categories));
         renderAll();
 
-        if (supabase) {
+        if (supabaseClient) {
             try {
                 // Sincronizza categorie
-                await supabase.from('warehouse_categories').upsert(categories.map(c => ({ name: c.name, sub: c.sub })));
+                await supabaseClient.from('warehouse_categories').upsert(categories.map(c => ({ name: c.name, sub: c.sub })));
                 // Sincronizza articoli
-                await supabase.from('warehouse_items').upsert(inventory.map(i => ({
+                await supabaseClient.from('warehouse_items').upsert(inventory.map(i => ({
                     name: i.name, category: i.category, subcategory: i.subcategory,
                     format: i.format, quantity: i.quantity, min_threshold: i.minThreshold, price: i.price
                 })));
@@ -392,11 +397,11 @@ html, body {
     }
 
     async function loadInitialData() {
-        if (supabase) {
-            const { data: catData } = await supabase.from('warehouse_categories').select('*');
+        if (supabaseClient) {
+            const { data: catData } = await supabaseClient.from('warehouse_categories').select('*');
             if (catData && catData.length > 0) categories = catData.map(c => ({ name: c.name, sub: c.sub }));
             
-            const { data: invData } = await supabase.from('warehouse_items').select('*');
+            const { data: invData } = await supabaseClient.from('warehouse_items').select('*');
             if (invData && invData.length > 0) inventory = invData.map(i => ({
                 name: i.name, category: i.category, subcategory: i.subcategory,
                 format: i.format, quantity: i.quantity, minThreshold: i.min_threshold, price: i.price
@@ -598,7 +603,7 @@ html, body {
     async function syncWithCloud() {
         const statusDiv = document.getElementById('connection-status');
         if (statusDiv) {
-            statusDiv.innerHTML = `<span class="sync-dot" style="background:${supabase ? '#10b981' : '#AD8B6A'}"></span> ${supabase ? 'Sincronizzato Cloud' : 'Locale Autonomo'}`;
+            statusDiv.innerHTML = `<span class="sync-dot" style="background:${supabaseClient ? '#10b981' : '#AD8B6A'}"></span> ${supabaseClient ? 'Sincronizzato Cloud' : 'Locale Autonomo'}`;
         }
     }
 
