@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Personale 1.0® - Risorse Umane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --hr-primary: #ad8b6a; --hr-dark: #7a5c3c; --hr-light: #c9ab8a;
+            --hr-accent: #4a5142; --hr-bg: #f5f2ed; --hr-card: #ffffff;
+            --hr-text: #1e2418; --hr-muted: #6b7264; --hr-border: rgba(122,92,60,0.12);
+            --hr-green: #4caf50; --hr-red: #e53935; --hr-orange: #ff9800; --hr-blue: #2196f3;
+            --hr-radius: 18px; --hr-shadow: 0 8px 30px rgba(122,92,60,0.08);
+        }
+        html, body { height: 100%; overflow: auto; font-family: 'Outfit', sans-serif; background: var(--hr-bg); color: var(--hr-text); }
+
+        /* Layout */
+        #app-shell { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+        #sidebar { background: var(--hr-card); border-right: 1px solid var(--hr-border); padding: 2rem 0; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+        .sidebar-brand { padding: 0 1.5rem 2rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--hr-border); margin-bottom: 1rem; }
+        .brand-logo { width: 40px; border-radius: 10px; }
+        .brand-name { font-weight: 800; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--hr-dark); }
+        .nav-group { flex: 1; padding: 0.5rem 0; }
+        .nav-link { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.5rem; cursor: pointer; font-size: 0.88rem; font-weight: 600; color: var(--hr-muted); transition: all 0.2s; border-left: 3px solid transparent; }
+        .nav-link:hover { background: rgba(173,139,106,0.06); color: var(--hr-text); }
+        .nav-link.active { color: var(--hr-primary); border-left-color: var(--hr-primary); background: rgba(173,139,106,0.08); font-weight: 800; }
+        .nav-link .nav-emoji { font-size: 1.1rem; width: 24px; text-align: center; }
+        #connection-status { padding: 1rem 1.5rem; font-size: 0.75rem; color: var(--hr-muted); display: flex; align-items: center; gap: 0.5rem; }
+        .sync-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .back-link { padding: 0.8rem 1.5rem; font-size: 0.8rem; color: var(--hr-muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; border-top: 1px solid var(--hr-border); margin-top: auto; }
+        .back-link:hover { color: var(--hr-primary); }
+
+        /* Main */
+        #main-container { padding: 2rem 3rem; overflow-y: auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .breadcrumb { font-size: 0.85rem; color: var(--hr-muted); }
+        .breadcrumb strong { color: var(--hr-text); }
+
+        /* Cards */
+        .card { background: var(--hr-card); border: 1px solid var(--hr-border); border-radius: var(--hr-radius); box-shadow: var(--hr-shadow); padding: 2rem; margin-bottom: 1.5rem; }
+        .card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; color: var(--hr-text); }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--hr-card); border: 1px solid var(--hr-border); border-radius: 16px; padding: 1.5rem; text-align: center; }
+        .stat-value { font-size: 2.5rem; font-weight: 800; color: var(--hr-primary); }
+        .stat-label { font-size: 0.75rem; font-weight: 600; color: var(--hr-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.3rem; }
+
+        /* Buttons */
+        .btn { padding: 0.8rem 1.5rem; border: none; border-radius: 12px; font-family: inherit; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: var(--hr-primary); color: #fff; }
+        .btn-primary:hover { background: var(--hr-dark); transform: translateY(-1px); }
+        .btn-sm { padding: 0.5rem 1rem; font-size: 0.75rem; border-radius: 8px; }
+        .btn-danger { background: var(--hr-red); color: #fff; }
+        .btn-success { background: var(--hr-green); color: #fff; }
+        .btn-outline { background: transparent; border: 1px solid var(--hr-border); color: var(--hr-text); }
+        .btn-outline:hover { border-color: var(--hr-primary); color: var(--hr-primary); }
+
+        /* Forms */
+        .form-group { margin-bottom: 1.2rem; }
+        .form-label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--hr-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--hr-border); border-radius: 12px; font-family: inherit; font-size: 0.9rem; background: var(--hr-bg); color: var(--hr-text); outline: none; transition: border-color 0.2s; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--hr-primary); }
+        .form-textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        /* Table */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        .data-table th { text-align: left; padding: 0.8rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--hr-muted); border-bottom: 2px solid var(--hr-border); }
+        .data-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--hr-border); vertical-align: middle; }
+        .data-table tr:hover { background: rgba(173,139,106,0.04); }
+
+        /* Avatar */
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--hr-primary), var(--hr-dark)); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 0.8rem; flex-shrink: 0; }
+        .avatar-lg { width: 80px; height: 80px; font-size: 2rem; border-radius: 20px; }
+
+        /* Badge */
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge-green { background: rgba(76,175,80,0.12); color: var(--hr-green); }
+        .badge-red { background: rgba(229,57,53,0.12); color: var(--hr-red); }
+        .badge-orange { background: rgba(255,152,0,0.12); color: var(--hr-orange); }
+        .badge-blue { background: rgba(33,150,243,0.12); color: var(--hr-blue); }
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30,36,24,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal { background: var(--hr-card); border-radius: var(--hr-radius); width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--hr-border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-weight: 800; font-size: 1rem; color: var(--hr-primary); }
+        .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--hr-muted); }
+        .modal-body { padding: 2rem; }
+
+        /* Chart bars */
+        .chart-bar-container { display: flex; flex-direction: column; gap: 0.6rem; }
+        .chart-row { display: flex; align-items: center; gap: 0.8rem; }
+        .chart-label { font-size: 0.75rem; font-weight: 600; width: 40px; text-align: right; color: var(--hr-muted); }
+        .chart-track { flex: 1; height: 24px; background: var(--hr-bg); border-radius: 12px; overflow: hidden; }
+        .chart-fill { height: 100%; border-radius: 12px; transition: width 0.8s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.65rem; font-weight: 800; color: #fff; }
+
+        /* Comm cards */
+        .comm-card { display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--hr-border); border-radius: 14px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: inherit; }
+        .comm-card:hover { border-color: var(--hr-primary); transform: translateY(-2px); box-shadow: var(--hr-shadow); }
+        .comm-icon { font-size: 2rem; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: rgba(173,139,106,0.08); border-radius: 14px; }
+
+        /* Mobile toggle */
+        .mobile-toggle { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 100; background: var(--hr-primary); color: #fff; border: none; width: 44px; height: 44px; border-radius: 12px; font-size: 1.3rem; cursor: pointer; }
+
+        @media (max-width: 1024px) {
+            #app-shell { grid-template-columns: 1fr; }
+            #sidebar { position: fixed; left: -280px; top: 0; width: 270px; z-index: 99; transition: left 0.3s; box-shadow: 5px 0 20px rgba(0,0,0,0.1); }
+            #sidebar.open { left: 0; }
+            .mobile-toggle { display: block; }
+            #main-container { padding: 1.5rem; padding-top: 4rem; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        /* Search */
+        .search-bar { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; }
+        .search-input { flex: 1; padding: 0.8rem 1.2rem; border: 1px solid var(--hr-border); border-radius: 12px; font-family: inherit; font-size: 0.9rem; background: var(--hr-card); outline: none; }
+        .search-input:focus { border-color: var(--hr-primary); }
+    </style>
+</head>
+<body>
+
+<button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<div id="app-shell">
+    <aside id="sidebar">
+        <div class="sidebar-brand">
+            <img src="../logo_personale.png" alt="Logo" class="brand-logo">
+            <span class="brand-name">GESTIONE PERSONALE</span>
+        </div>
+        <nav class="nav-group">
+            <div class="nav-link active" id="nav-dashboard" onclick="switchView('dashboard', this)">
+                <span class="nav-emoji">📊</span> Dashboard
+            </div>
+            <div class="nav-link" id="nav-anagrafica" onclick="switchView('anagrafica', this)">
+                <span class="nav-emoji">👤</span> Anagrafica
+            </div>
+            <div class="nav-link" id="nav-presenze" onclick="switchView('presenze', this)">
+                <span class="nav-emoji">📅</span> Presenze & Orari
+            </div>
+            <div class="nav-link" id="nav-rubrica" onclick="switchView('rubrica', this)">
+                <span class="nav-emoji">📇</span> Rubrica
+            </div>
+            <div class="nav-link" id="nav-produttivita" onclick="switchView('produttivita', this)">
+                <span class="nav-emoji">📈</span> Produttività
+            </div>
+            <div class="nav-link" id="nav-comunicazioni" onclick="switchView('comunicazioni', this)">
+                <span class="nav-emoji">💬</span> Comunicazioni
+            </div>
+        </nav>
+        <div id="connection-status">
+            <span class="sync-dot" style="background:#ad8b6a"></span> Locale Autonomo
+        </div>
+        <a href="../index.html" class="back-link">🏠 Torna all'Hub</a>
+    </aside>
+
+    <main id="main-container">
+        <header class="top-bar">
+            <div class="breadcrumb">Ecosistema / <strong>Personale</strong></div>
+        </header>
+        <div id="view-container"></div>
+    </main>
+</div>
+
+<script>
+// ═══ DATA LAYER ═══
+const STORAGE_KEY = 'appstudio_hr_';
+let employees = JSON.parse(localStorage.getItem(STORAGE_KEY + 'employees')) || [];
+let attendance = JSON.parse(localStorage.getItem(STORAGE_KEY + 'attendance')) || [];
+let messages = JSON.parse(localStorage.getItem(STORAGE_KEY + 'messages')) || [
+    { id: 1, date: '2026-03-28', subject: 'Riunione settimanale', body: 'Tutti in sala conferenze alle 10:00 di lunedì.', author: 'Direzione' },
+    { id: 2, date: '2026-03-25', subject: 'Nuova policy ferie', body: 'Le ferie estive vanno prenotate entro il 15 aprile.', author: 'HR' }
+];
+
+function saveData() {
+    localStorage.setItem(STORAGE_KEY + 'employees', JSON.stringify(employees));
+    localStorage.setItem(STORAGE_KEY + 'attendance', JSON.stringify(attendance));
+    localStorage.setItem(STORAGE_KEY + 'messages', JSON.stringify(messages));
+}
+
+// ═══ NAVIGATION ═══
+function switchView(view, el) {
+    document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+    if (el) el.classList.add('active');
+    if (window.innerWidth <= 1024) document.getElementById('sidebar').classList.remove('open');
+    const views = { dashboard: renderDashboard, anagrafica: renderAnagrafica, presenze: renderPresenze, rubrica: renderRubrica, produttivita: renderProduttivita, comunicazioni: renderComunicazioni };
+    (views[view] || renderDashboard)();
+}
+
+// ═══ DASHBOARD ═══
+function renderDashboard() {
+    const today = new Date().toISOString().slice(0, 10);
+    const presentiOggi = attendance.filter(a => a.date === today && a.status === 'presente').length;
+    const ferieOggi = attendance.filter(a => a.date === today && a.status === 'ferie').length;
+    const permessiOggi = attendance.filter(a => a.date === today && (a.status === 'permesso' || a.status === 'assente')).length;
+
+    document.getElementById('view-container').innerHTML = `
+        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.5rem;">Dashboard Personale</h2>
+        <p style="color:var(--hr-muted); margin-bottom:2rem;">Panoramica delle risorse umane aziendali</p>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value">${employees.length}</div><div class="stat-label">Dipendenti</div></div>
+            <div class="stat-card"><div class="stat-value" style="color:var(--hr-green)">${presentiOggi}</div><div class="stat-label">Presenti Oggi</div></div>
+            <div class="stat-card"><div class="stat-value" style="color:var(--hr-orange)">${ferieOggi}</div><div class="stat-label">In Ferie</div></div>
+            <div class="stat-card"><div class="stat-value" style="color:var(--hr-red)">${permessiOggi}</div><div class="stat-label">Assenti / Permesso</div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Azioni Rapide</div>
+            <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="switchView('anagrafica', document.getElementById('nav-anagrafica'))">+ Nuovo Dipendente</button>
+                <button class="btn btn-outline" onclick="switchView('presenze', document.getElementById('nav-presenze'))">📅 Registra Presenze</button>
+                <button class="btn btn-outline" onclick="switchView('comunicazioni', document.getElementById('nav-comunicazioni'))">💬 Nuova Comunicazione</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Ultimi Dipendenti Aggiunti</div>
+            ${employees.length === 0 ? '<p style="color:var(--hr-muted); font-size:0.9rem;">Nessun dipendente registrato. Inizia dalla sezione Anagrafica!</p>' :
+            `<table class="data-table"><thead><tr><th></th><th>Nome</th><th>Mansione</th><th>Contratto</th></tr></thead><tbody>
+            ${employees.slice(-5).reverse().map(e => `<tr>
+                <td><div class="avatar">${e.nome[0]}${e.cognome[0]}</div></td>
+                <td><strong>${e.nome} ${e.cognome}</strong></td>
+                <td>${e.mansione || '-'}</td>
+                <td><span class="badge badge-blue">${e.contratto || '-'}</span></td>
+            </tr>`).join('')}</tbody></table>`}
+        </div>
+    `;
+}
+
+// ═══ ANAGRAFICA ═══
+function renderAnagrafica() {
+    document.getElementById('view-container').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+            <div>
+                <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.3rem;">Anagrafica Dipendenti</h2>
+                <p style="color:var(--hr-muted);">${employees.length} dipendenti registrati</p>
+            </div>
+            <button class="btn btn-primary" onclick="showEmployeeModal()">+ Nuovo Dipendente</button>
+        </div>
+
+        <div class="search-bar">
+            <input class="search-input" id="search-emp" placeholder="Cerca per nome, cognome o mansione..." oninput="filterEmployees()">
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+            <table class="data-table" id="emp-table">
+                <thead><tr><th></th><th>Dipendente</th><th>Mansione</th><th>Contratto</th><th>Cellulare</th><th>Azioni</th></tr></thead>
+                <tbody id="emp-tbody"></tbody>
+            </table>
+        </div>
+    `;
+    renderEmployeeRows(employees);
+}
+
+function renderEmployeeRows(list) {
+    document.getElementById('emp-tbody').innerHTML = list.length === 0
+        ? '<tr><td colspan="6" style="text-align:center; padding:3rem; color:var(--hr-muted);">Nessun dipendente trovato</td></tr>'
+        : list.map((e, i) => `<tr>
+            <td><div class="avatar">${e.nome[0]}${e.cognome[0]}</div></td>
+            <td><strong>${e.nome} ${e.cognome}</strong><br><small style="color:var(--hr-muted)">${e.email || ''}</small></td>
+            <td>${e.mansione || '-'}</td>
+            <td><span class="badge badge-blue">${e.contratto || '-'}</span></td>
+            <td>${e.cellulare || '-'}</td>
+            <td>
+                <button class="btn btn-sm btn-outline" onclick="showEmployeeModal(${employees.indexOf(e)})">✏️</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteEmployee(${employees.indexOf(e)})">🗑️</button>
+            </td>
+        </tr>`).join('');
+}
+
+function filterEmployees() {
+    const q = document.getElementById('search-emp').value.toLowerCase();
+    renderEmployeeRows(employees.filter(e =>
+        (e.nome + ' ' + e.cognome + ' ' + (e.mansione || '')).toLowerCase().includes(q)
+    ));
+}
+
+function showEmployeeModal(idx) {
+    const e = idx !== undefined ? employees[idx] : {};
+    const isEdit = idx !== undefined;
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.onclick = (ev) => { if (ev.target === overlay) overlay.remove(); };
+    overlay.innerHTML = `
+        <div class="modal">
+            <div class="modal-header">
+                <h3>${isEdit ? 'Modifica' : 'Nuovo'} Dipendente</h3>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Nome *</label><input class="form-input" id="f-nome" value="${e.nome||''}"></div>
+                    <div class="form-group"><label class="form-label">Cognome *</label><input class="form-input" id="f-cognome" value="${e.cognome||''}"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Data di Nascita</label><input type="date" class="form-input" id="f-nascita" value="${e.nascita||''}"></div>
+                    <div class="form-group"><label class="form-label">Cellulare</label><input class="form-input" id="f-cell" value="${e.cellulare||''}" placeholder="+39..."></div>
+                </div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="f-email" value="${e.email||''}"></div>
+                <div class="form-group"><label class="form-label">Residenza</label><input class="form-input" id="f-residenza" value="${e.residenza||''}" placeholder="Indirizzo completo"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Tipologia Contratto</label>
+                        <select class="form-select" id="f-contratto">
+                            <option value="">Seleziona...</option>
+                            <option ${e.contratto==='Indeterminato'?'selected':''}>Indeterminato</option>
+                            <option ${e.contratto==='Determinato'?'selected':''}>Determinato</option>
+                            <option ${e.contratto==='Apprendistato'?'selected':''}>Apprendistato</option>
+                            <option ${e.contratto==='Stage'?'selected':''}>Stage</option>
+                            <option ${e.contratto==='Part-time'?'selected':''}>Part-time</option>
+                            <option ${e.contratto==='Collaborazione'?'selected':''}>Collaborazione</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label class="form-label">Mansione</label><input class="form-input" id="f-mansione" value="${e.mansione||''}" placeholder="Es. Chef, Cameriere..."></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Orario di Lavoro</label>
+                    <input class="form-input" id="f-orario" value="${e.orario||''}" placeholder="Es. Lun-Ven 09:00-18:00">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Note / CV</label>
+                    <textarea class="form-textarea" id="f-note" placeholder="Inserisci note, competenze o link al CV...">${e.note||''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Foto Profilo (URL)</label>
+                    <input class="form-input" id="f-foto" value="${e.foto||''}" placeholder="https://...">
+                </div>
+                <div style="display:flex; gap:0.8rem; margin-top:1.5rem;">
+                    <button class="btn btn-primary" style="flex:1;" onclick="saveEmployee(${isEdit ? idx : -1})">${isEdit ? 'SALVA MODIFICHE' : 'AGGIUNGI DIPENDENTE'}</button>
+                    <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">ANNULLA</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+function saveEmployee(idx) {
+    const nome = document.getElementById('f-nome').value.trim();
+    const cognome = document.getElementById('f-cognome').value.trim();
+    if (!nome || !cognome) return alert('Nome e Cognome sono obbligatori.');
+    const data = {
+        nome, cognome,
+        nascita: document.getElementById('f-nascita').value,
+        cellulare: document.getElementById('f-cell').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        residenza: document.getElementById('f-residenza').value.trim(),
+        contratto: document.getElementById('f-contratto').value,
+        mansione: document.getElementById('f-mansione').value.trim(),
+        orario: document.getElementById('f-orario').value.trim(),
+        note: document.getElementById('f-note').value.trim(),
+        foto: document.getElementById('f-foto').value.trim(),
+        produttivita: (idx >= 0 && employees[idx]) ? employees[idx].produttivita : Array.from({length:12}, () => Math.floor(Math.random()*40)+60)
+    };
+    if (idx >= 0) employees[idx] = data; else employees.push(data);
+    saveData();
+    document.querySelector('.modal-overlay').remove();
+    renderAnagrafica();
+}
+
+function deleteEmployee(idx) {
+    if (confirm(`Eliminare ${employees[idx].nome} ${employees[idx].cognome}?`)) {
+        employees.splice(idx, 1);
+        saveData();
+        renderAnagrafica();
+    }
+}
+
+// ═══ PRESENZE ═══
+function renderPresenze() {
+    const today = new Date().toISOString().slice(0, 10);
+    document.getElementById('view-container').innerHTML = `
+        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.3rem;">Presenze & Orari</h2>
+        <p style="color:var(--hr-muted); margin-bottom:2rem;">Registra presenze, ferie, permessi e assenze</p>
+
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <div class="card-title" style="margin:0;">Registro del <input type="date" id="att-date" value="${today}" class="form-input" style="width:auto; display:inline; margin-left:0.5rem;" onchange="loadAttendanceDay()"></div>
+            </div>
+            <div id="att-list">
+                ${employees.length === 0 ? '<p style="color:var(--hr-muted);">Aggiungi dipendenti dalla sezione Anagrafica per registrare le presenze.</p>' : ''}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Legenda</div>
+            <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+                <span><span class="badge badge-green">Presente</span></span>
+                <span><span class="badge badge-orange">Ferie</span></span>
+                <span><span class="badge badge-blue">Permesso</span></span>
+                <span><span class="badge badge-red">Assente</span></span>
+                <span><span class="badge" style="background:rgba(156,39,176,0.12); color:#9c27b0;">Maternità</span></span>
+            </div>
+        </div>
+    `;
+    loadAttendanceDay();
+}
+
+function loadAttendanceDay() {
+    if (employees.length === 0) return;
+    const date = document.getElementById('att-date').value;
+    const list = document.getElementById('att-list');
+    list.innerHTML = `<table class="data-table"><thead><tr><th></th><th>Dipendente</th><th>Stato</th><th>Note</th></tr></thead><tbody>
+        ${employees.map((e, i) => {
+            const rec = attendance.find(a => a.empIdx === i && a.date === date) || {};
+            return `<tr>
+                <td><div class="avatar">${e.nome[0]}${e.cognome[0]}</div></td>
+                <td><strong>${e.nome} ${e.cognome}</strong><br><small style="color:var(--hr-muted)">${e.mansione||''}</small></td>
+                <td>
+                    <select class="form-select" style="width:auto; min-width:140px;" onchange="setAttendance(${i}, '${date}', this.value)">
+                        <option value="">-- Seleziona --</option>
+                        <option value="presente" ${rec.status==='presente'?'selected':''}>✅ Presente</option>
+                        <option value="ferie" ${rec.status==='ferie'?'selected':''}>🏖️ Ferie</option>
+                        <option value="permesso" ${rec.status==='permesso'?'selected':''}>📋 Permesso</option>
+                        <option value="assente" ${rec.status==='assente'?'selected':''}>❌ Assente</option>
+                        <option value="maternita" ${rec.status==='maternita'?'selected':''}>🤱 Maternità</option>
+                    </select>
+                </td>
+                <td><input class="form-input" style="width:160px;" placeholder="Note..." value="${rec.note||''}" onchange="setAttendanceNote(${i}, '${date}', this.value)"></td>
+            </tr>`;
+        }).join('')}</tbody></table>`;
+}
+
+function setAttendance(empIdx, date, status) {
+    const existing = attendance.findIndex(a => a.empIdx === empIdx && a.date === date);
+    if (existing >= 0) attendance[existing].status = status;
+    else attendance.push({ empIdx, date, status, note: '' });
+    saveData();
+}
+
+function setAttendanceNote(empIdx, date, note) {
+    const existing = attendance.findIndex(a => a.empIdx === empIdx && a.date === date);
+    if (existing >= 0) attendance[existing].note = note;
+    else attendance.push({ empIdx, date, status: '', note });
+    saveData();
+}
+
+// ═══ RUBRICA ═══
+function renderRubrica() {
+    document.getElementById('view-container').innerHTML = `
+        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.3rem;">Rubrica Aziendale</h2>
+        <p style="color:var(--hr-muted); margin-bottom:2rem;">Contatti rapidi del personale</p>
+        <div class="search-bar">
+            <input class="search-input" id="search-rub" placeholder="Cerca contatto..." oninput="filterRubrica()">
+        </div>
+        <div id="rubrica-list" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:1rem;"></div>
+    `;
+    renderRubricaCards(employees);
+}
+
+function renderRubricaCards(list) {
+    document.getElementById('rubrica-list').innerHTML = list.length === 0
+        ? '<p style="color:var(--hr-muted); grid-column:1/-1; text-align:center; padding:3rem;">Nessun contatto trovato.</p>'
+        : list.map(e => `
+        <div class="card" style="padding:1.5rem; display:flex; gap:1rem; align-items:center;">
+            <div class="avatar avatar-lg">${e.nome[0]}${e.cognome[0]}</div>
+            <div style="flex:1; min-width:0;">
+                <strong style="font-size:1rem;">${e.nome} ${e.cognome}</strong>
+                <p style="font-size:0.8rem; color:var(--hr-muted); margin:0.2rem 0;">${e.mansione || 'Nessuna mansione'}</p>
+                <div style="display:flex; gap:0.5rem; margin-top:0.5rem; flex-wrap:wrap;">
+                    ${e.cellulare ? `<a href="tel:${e.cellulare}" class="btn btn-sm btn-outline" style="text-decoration:none;">📞 Chiama</a>` : ''}
+                    ${e.email ? `<a href="mailto:${e.email}" class="btn btn-sm btn-outline" style="text-decoration:none;">✉️ Email</a>` : ''}
+                    ${e.cellulare ? `<a href="https://wa.me/${e.cellulare.replace(/[^0-9]/g,'')}" target="_blank" class="btn btn-sm btn-success" style="text-decoration:none;">💬 WA</a>` : ''}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterRubrica() {
+    const q = document.getElementById('search-rub').value.toLowerCase();
+    renderRubricaCards(employees.filter(e => (e.nome+' '+e.cognome+' '+(e.mansione||'')).toLowerCase().includes(q)));
+}
+
+// ═══ PRODUTTIVITÀ ═══
+function renderProduttivita() {
+    const months = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+    const colors = ['#ad8b6a','#4a5142','#e53935','#2196f3','#ff9800','#4caf50','#9c27b0','#795548'];
+
+    document.getElementById('view-container').innerHTML = `
+        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.3rem;">Produttività & Benefit</h2>
+        <p style="color:var(--hr-muted); margin-bottom:2rem;">Andamento produttivo e classifica merito annuale</p>
+
+        ${employees.length === 0 ? '<div class="card"><p style="color:var(--hr-muted);">Aggiungi dipendenti per visualizzare i grafici produttività.</p></div>' :
+        `<div class="card">
+            <div class="card-title">Andamento Produttivo Mensile</div>
+            ${employees.map((e, i) => `
+                <div style="margin-bottom:2rem;">
+                    <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:0.8rem;">
+                        <div class="avatar">${e.nome[0]}${e.cognome[0]}</div>
+                        <strong>${e.nome} ${e.cognome}</strong>
+                        <span class="badge badge-blue">${e.mansione||''}</span>
+                    </div>
+                    <div class="chart-bar-container">
+                        ${(e.produttivita || []).map((val, m) => `
+                            <div class="chart-row">
+                                <span class="chart-label">${months[m]}</span>
+                                <div class="chart-track">
+                                    <div class="chart-fill" style="width:${val}%; background:${colors[i % colors.length]};">${val}%</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('<hr style="border:none; border-top:1px solid var(--hr-border); margin:1.5rem 0;">')}
+        </div>
+
+        <div class="card">
+            <div class="card-title">🏆 Classifica Merito Annuale</div>
+            <table class="data-table">
+                <thead><tr><th>Pos.</th><th></th><th>Dipendente</th><th>Media Annua</th><th>Benefit</th></tr></thead>
+                <tbody>
+                ${employees.map(e => ({
+                    ...e,
+                    avg: Math.round((e.produttivita || []).reduce((s,v) => s+v, 0) / ((e.produttivita||[]).length || 1))
+                })).sort((a,b) => b.avg - a.avg).map((e, i) => `
+                    <tr>
+                        <td style="font-weight:800; color:${i===0?'gold':i===1?'silver':i===2?'#cd7f32':'var(--hr-muted)'}; font-size:1.2rem;">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
+                        <td><div class="avatar">${e.nome[0]}${e.cognome[0]}</div></td>
+                        <td><strong>${e.nome} ${e.cognome}</strong></td>
+                        <td><strong style="color:var(--hr-primary);">${e.avg}%</strong></td>
+                        <td>${i < 3 ? '<span class="badge badge-green">🎁 Bonus</span>' : '<span class="badge" style="opacity:0.4;">-</span>'}</td>
+                    </tr>
+                `).join('')}
+                </tbody>
+            </table>
+        </div>`}
+    `;
+}
+
+// ═══ COMUNICAZIONI ═══
+function renderComunicazioni() {
+    document.getElementById('view-container').innerHTML = `
+        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:0.3rem;">Comunicazioni Aziendali</h2>
+        <p style="color:var(--hr-muted); margin-bottom:2rem;">Bacheca messaggi e canali di comunicazione</p>
+
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <div class="card-title" style="margin:0;">Bacheca</div>
+                <button class="btn btn-primary btn-sm" onclick="showNewMessageModal()">+ Nuovo Messaggio</button>
+            </div>
+            <div id="msg-list">
+                ${messages.map((m, i) => `
+                    <div style="padding:1rem; border:1px solid var(--hr-border); border-radius:14px; margin-bottom:0.8rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                            <strong style="color:var(--hr-primary);">${m.subject}</strong>
+                            <small style="color:var(--hr-muted);">${m.date} · ${m.author}</small>
+                        </div>
+                        <p style="font-size:0.9rem; color:var(--hr-text);">${m.body}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Canali di Comunicazione Rapida</div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:1rem;">
+                <a href="https://web.whatsapp.com" target="_blank" class="comm-card">
+                    <div class="comm-icon">💬</div>
+                    <div><strong>WhatsApp</strong><br><small style="color:var(--hr-muted);">Messaggistica istantanea</small></div>
+                </a>
+                <a href="https://web.telegram.org" target="_blank" class="comm-card">
+                    <div class="comm-icon">✈️</div>
+                    <div><strong>Telegram</strong><br><small style="color:var(--hr-muted);">Canali e gruppi</small></div>
+                </a>
+                <a href="mailto:" class="comm-card">
+                    <div class="comm-icon">📧</div>
+                    <div><strong>Email Aziendale</strong><br><small style="color:var(--hr-muted);">Comunicazioni formali</small></div>
+                </a>
+                <a href="https://meet.google.com" target="_blank" class="comm-card">
+                    <div class="comm-icon">📹</div>
+                    <div><strong>Video Conferenza</strong><br><small style="color:var(--hr-muted);">Riunioni a distanza</small></div>
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+function showNewMessageModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.onclick = (ev) => { if (ev.target === overlay) overlay.remove(); };
+    overlay.innerHTML = `
+        <div class="modal">
+            <div class="modal-header"><h3>Nuova Comunicazione</h3><button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button></div>
+            <div class="modal-body">
+                <div class="form-group"><label class="form-label">Oggetto</label><input class="form-input" id="msg-subject" placeholder="Oggetto del messaggio..."></div>
+                <div class="form-group"><label class="form-label">Messaggio</label><textarea class="form-textarea" id="msg-body" placeholder="Scrivi il messaggio per tutto il team..." style="min-height:120px;"></textarea></div>
+                <div class="form-group"><label class="form-label">Autore</label><input class="form-input" id="msg-author" placeholder="Es. Direzione, HR..." value="Direzione"></div>
+                <button class="btn btn-primary" style="width:100%;" onclick="postMessage()">PUBBLICA COMUNICAZIONE</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+function postMessage() {
+    const subject = document.getElementById('msg-subject').value.trim();
+    const body = document.getElementById('msg-body').value.trim();
+    const author = document.getElementById('msg-author').value.trim() || 'Direzione';
+    if (!subject || !body) return alert('Compila tutti i campi.');
+    messages.unshift({ id: Date.now(), date: new Date().toISOString().slice(0,10), subject, body, author });
+    saveData();
+    document.querySelector('.modal-overlay').remove();
+    renderComunicazioni();
+}
+
+// ═══ INIT ═══
+switchView('dashboard', document.getElementById('nav-dashboard'));
+</script>
+</body>
+</html>
