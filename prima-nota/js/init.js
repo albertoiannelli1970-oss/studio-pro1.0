@@ -12,6 +12,9 @@ if (typeof CategoryManager !== 'undefined') {
 
 // --- GLOBAL ATTACHMENTS ---
 window.renderDashboard = renderDashboard;
+window.renderInventory = () => {}; // Placeholder to be replaced by module
+window.renderCatConfig = () => {}; // Placeholder
+window.renderSuppliers = () => {}; // Placeholder
 window.renderClienti = renderClienti;
 window.filterClients = filterClients;
 window.showClientForm = showClientForm;
@@ -69,7 +72,7 @@ window.closeCard = (el) => {
 // --- ROUTING & NAV ---
 function showSection(name) {
     mainContent.className = 'fade-in';
-    document.querySelectorAll('.app-nav button').forEach(btn => {
+    document.querySelectorAll('.nav-link').forEach(btn => {
         btn.classList.remove('active');
         if (btn.id === `nav-${name}`) btn.classList.add('active');
     });
@@ -81,9 +84,11 @@ function showSection(name) {
     }
 
     switch(name) {
-
         case 'onboarding': renderOnboarding(); break;
         case 'dashboard': renderDashboard(); break;
+        case 'inventory': renderInventory(); break;
+        case 'catconfig': renderCatConfig(); break;
+        case 'suppliers': renderSuppliers(); break;
         case 'categorie': renderCategories(); break;
         case 'sottocategorie': renderSubcategories(); break;
         case 'clienti': renderClienti(); break;

@@ -147,9 +147,58 @@ class ClientManager {
     }
 }
 
+class InventoryManager {
+    constructor() {
+        this.items = JSON.parse(localStorage.getItem('pn_inventory')) || [
+            { id: 1, name: 'Farina Tipo 0', quantity: 50, unit: 'kg', minStock: 10, category: 'Alimentari' },
+            { id: 2, name: 'Vino Rosso della Casa', quantity: 120, unit: 'L', minStock: 20, category: 'Bevande' },
+            { id: 3, name: 'Detersivo Lavastoviglie', quantity: 5, unit: 'L', minStock: 10, category: 'Materiale Consumo' }
+        ];
+    }
+    save() { 
+        localStorage.setItem('pn_inventory', JSON.stringify(this.items));
+        if (CategoryManager.onDataChange) CategoryManager.onDataChange('inventory');
+    }
+    getItems() { return this.items; }
+    addItem(name, quantity, unit, minStock, category) {
+        this.items.push({ id: Date.now(), name, quantity: parseFloat(quantity), unit, minStock: parseFloat(minStock), category });
+        this.save();
+    }
+    updateQuantity(id, change) {
+        const item = this.items.find(i => i.id == id);
+        if (item) {
+            item.quantity += parseFloat(change);
+            this.save();
+        }
+    }
+}
+
+class SupplierManager {
+    constructor() {
+        this.suppliers = JSON.parse(localStorage.getItem('pn_suppliers')) || [
+            { id: 1, name: 'Global Food SpA', contact: 'Luca Bruni', category: 'Alimentari' },
+            { id: 2, name: 'Cantine Sociali', contact: 'Maria Rossi', category: 'Bevande' }
+        ];
+        this.orders = JSON.parse(localStorage.getItem('pn_orders')) || [];
+    }
+    save() {
+        localStorage.setItem('pn_suppliers', JSON.stringify(this.suppliers));
+        localStorage.setItem('pn_orders', JSON.stringify(this.orders));
+        if (CategoryManager.onDataChange) CategoryManager.onDataChange('suppliers');
+    }
+    getSuppliers() { return this.suppliers; }
+    getOrders() { return this.orders; }
+    addOrder(supplierId, items, total) {
+        this.orders.push({ id: Date.now(), supplierId, items, total, date: new Date().toISOString(), status: 'Pendente' });
+        this.save();
+    }
+}
+
 const catManager = new CategoryManager();
 const transManager = new TransactionManager();
 const clientManager = new ClientManager();
+const invManager = new InventoryManager();
+const supplierManager = new SupplierManager();
 
 function logout() {
     localStorage.removeItem('pn_user_type');
