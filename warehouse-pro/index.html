@@ -27,7 +27,7 @@
 * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 html, body {
     height: 100%; margin: 0; padding: 0;
-    overflow: hidden; 
+    overflow: auto; 
     background: url('../bg-organic.png') no-repeat center center fixed;
     background-size: cover;
     color: var(--eco-text-body); font-family: 'Outfit', sans-serif;
@@ -35,8 +35,7 @@ html, body {
 
 #app-shell { 
     display: flex; height: 100vh; width: 100vw; 
-    background: rgba(242, 239, 234, 0.45);
-    backdrop-filter: blur(8px);
+    background: transparent;
 }
 
 /* --- SIDEBAR --- */
@@ -60,7 +59,25 @@ html, body {
     transition: all 0.25s ease; text-decoration: none; border: 1px solid transparent; 
 }
 .nav-link:hover { background: rgba(255, 255, 255, 0.08); color: #fff; transform: translateX(5px); }
-.nav-link.active { background: rgba(255, 255, 255, 0.15); color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+#sidebar.collapsed .nav-text { display: none; }
+
+/* Mobile Sidebar Toggle */
+.mobile-toggle { 
+    display: none; position: fixed; top: 1.5rem; left: 1.5rem; 
+    z-index: 1000; background: var(--eco-accent); color: #fff; 
+    border: none; padding: 0.8rem; border-radius: 12px; cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 1024px) {
+    #sidebar { position: fixed; left: 0; top: 0; z-index: 1001; transform: translateX(-100%); width: 280px !important; }
+    #sidebar.active { transform: translateX(0); }
+    .mobile-toggle { display: block; }
+    #main-container { width: 100vw; padding-top: 60px; }
+    .top-bar { padding: 0 1.5rem; }
+    #content-area { padding: 2rem 1rem; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+}
 
 /* --- MAIN CONTAINER --- */
 #main-container { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: transparent; }
@@ -131,6 +148,7 @@ html, body {
 </head>
 <body>
 
+    <button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('active')">☰</button>
 <div id="app-shell">
     <aside id="sidebar">
         <div class="sidebar-brand">
@@ -138,19 +156,19 @@ html, body {
             <span class="brand-name">WAREHOUSE PRO</span>
         </div>
         <nav class="nav-group">
-            <div class="nav-link active" onclick="switchView('dashboard')">
+            <div class="nav-link active" id="nav-dashboard" onclick="switchView('dashboard', this)">
                 <span class="nav-icon">📊</span>
                 <span class="nav-text">Dashboard</span>
             </div>
-            <div class="nav-link" onclick="switchView('registry')">
+            <div class="nav-link" id="nav-registry" onclick="switchView('registry', this)">
                 <span class="nav-icon">📦</span>
                 <span class="nav-text">Inventario</span>
             </div>
-            <div class="nav-link" onclick="switchView('config')" id="nav-config">
+            <div class="nav-link" id="nav-config" onclick="switchView('config', this)">
                 <span class="nav-icon">⚙️</span>
                 <span class="nav-text">Configura Categorie</span>
             </div>
-            <div class="nav-link" onclick="switchView('orders')">
+            <div class="nav-link" id="nav-orders" onclick="switchView('orders', this)">
                 <span class="nav-icon">📝</span>
                 <span class="nav-text">Ordini Fornitori</span>
             </div>
@@ -338,15 +356,17 @@ html, body {
     }
 
     let categories = JSON.parse(localStorage.getItem('appstudio_warehouse_categories')) || [
-        { name: 'Alimentari', sub: ['Freschi', 'Secchi', 'Conserve'] },
-        { name: 'Beverage', sub: ['Acqua', 'Vini', 'Birre', 'Soft Drinks'] },
-        { name: 'Pulizia', sub: ['Cucina', 'Sale', 'Personale'] },
-        { name: 'Attrezzatura', sub: ['Cucina', 'Sala', 'Manutenzione'] }
+        { name: 'Alimentari', sub: ['Freschi', 'Secchi', 'Surgelati', 'Conserve'] },
+        { name: 'Beverage', sub: ['Vini Rossi', 'Vini Bianchi', 'Birre Artigianali', 'Soft Drinks', 'Superalcolici'] },
+        { name: 'Consumabili', sub: ['Packaging', 'Detergenti', 'Tovagliato monouso'] },
+        { name: 'Manutenzione', sub: ['Cucina', 'Attrezzatura Sala'] }
     ];
 
     let inventory = JSON.parse(localStorage.getItem('appstudio_warehouse_items')) || [
-        { name: 'Olio d\'Oliva', category: 'Alimentari', subcategory: 'Secchi', format: 'Litri', quantity: 25, minThreshold: 10, price: 12.50 },
-        { name: 'Farina Manitoba', category: 'Alimentari', subcategory: 'Secchi', format: 'Kg', quantity: 5, minThreshold: 15, price: 1.20 }
+        { name: 'Farina Tipo 00', category: 'Alimentari', subcategory: 'Secchi', format: 'Kg', quantity: 25, minThreshold: 10, price: 1.20 },
+        { name: 'Vino Rosso della Casa', category: 'Beverage', subcategory: 'Vini Rossi', format: 'Pezzi', quantity: 12, minThreshold: 24, price: 5.50 },
+        { name: 'Detergente Piatti', category: 'Consumabili', subcategory: 'Detergenti', format: 'Litri', quantity: 5, minThreshold: 10, price: 8.90 },
+        { name: 'Punte di Asparagi', category: 'Alimentari', subcategory: 'Freschi', format: 'Kg', quantity: 3, minThreshold: 5, price: 12.00 }
     ];
 
     async function saveData() {
@@ -521,13 +541,17 @@ html, body {
     }
 
     // --- NAVIGATION & UTILS ---
-    function switchView(view) {
+    function switchView(view, btn) {
         document.querySelectorAll('.app-view').forEach(v => v.style.display = 'none');
         const el = document.getElementById(`view-${view}`);
         if (el) el.style.display = (view === 'dashboard' ? 'flex' : 'block');
         
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        if (btn) btn.classList.add('active');
+
+        // Mobile auto-collapse
+        const sidebar = document.getElementById('sidebar');
+        if (window.innerWidth <= 1024) sidebar.classList.remove('active');
     }
 
     function showRegistrationModal() { document.getElementById('modal-item').style.display = 'flex'; }
