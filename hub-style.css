@@ -144,13 +144,8 @@ header {
 .ecosystem-tree {
   width: 100%;
   filter: drop-shadow(0 30px 60px rgba(93, 102, 76, 0.2));
-  animation: treeFloat 6s ease-in-out infinite;
 }
 
-@keyframes treeFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}
 
 /* --- FRUIT SYSTEM (App Logos on Tree) --- */
 .fruit {
