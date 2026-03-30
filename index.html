@@ -40,57 +40,112 @@
         </header>
 
         <main>
+            <!-- ═══ HERO: Orbital Ecosystem ═══ -->
             <section class="hero container fade-in">
-                <div class="ecosystem-tree-container">
-                    <img src="logo_ecosystem.png" alt="Albero Ecosistema" class="ecosystem-tree">
-                </div>
-                
                 <h1 class="hero-title">IL TUO ECOSISTEMA<br>DI APP DIGITALI, <span>TOTALMENTE</span><br>APPSTUDIO PRO 1.0 (R)</h1>
                 <p class="hero-subtitle">
                     APPSTUDIO PRO 1.0 (R): LA PIATTAFORMA UNICA PER CONNETTERE TUTTE LE TUE APPLICAZIONI.
                 </p>
-                <div style="display: flex; gap: 1.5rem; justify-content: center;">
+
+                <!-- Orbital Hub Visual -->
+                <div class="orbit-hub">
+                    <!-- SVG Connection Lines -->
+                    <svg class="orbit-lines" viewBox="0 0 700 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="350" y1="170" x2="110" y2="90" class="conn-line" />
+                        <line x1="350" y1="170" x2="590" y2="90" class="conn-line" />
+                        <line x1="350" y1="170" x2="350" y2="340" class="conn-line" />
+                        <line x1="110" y1="90" x2="590" y2="90" class="conn-line-peer" />
+                        <line x1="590" y1="90" x2="350" y2="340" class="conn-line-peer" />
+                        <line x1="350" y1="340" x2="110" y2="90" class="conn-line-peer" />
+                        <!-- Data dots traveling -->
+                        <circle r="4" fill="var(--eco-accent)" opacity="0.7">
+                            <animateMotion dur="3s" repeatCount="indefinite" path="M350,170 L110,90" />
+                        </circle>
+                        <circle r="4" fill="var(--eco-secondary)" opacity="0.7">
+                            <animateMotion dur="4s" repeatCount="indefinite" path="M350,170 L590,90" />
+                        </circle>
+                        <circle r="3" fill="var(--eco-accent)" opacity="0.4">
+                            <animateMotion dur="5s" repeatCount="indefinite" path="M110,90 L590,90" />
+                        </circle>
+                    </svg>
+
+                    <!-- Centro: Albero Hub -->
+                    <div class="orbit-center">
+                        <img src="logo_ecosystem.png" alt="Albero Ecosistema" class="orbit-tree">
+                        <span class="orbit-center-label">HUB</span>
+                    </div>
+
+                    <!-- Nodo 1: Prima Nota Pro -->
+                    <a href="prima-nota/index.html" class="orbit-node node-1">
+                        <div class="node-icon">📈</div>
+                        <div class="node-info">
+                            <h3>Prima Nota Pro</h3>
+                            <p>Flussi finanziari e bilancio</p>
+                            <span class="node-badge badge-active">ATTIVO</span>
+                        </div>
+                    </a>
+
+                    <!-- Nodo 2: Gestione Magazzino -->
+                    <a href="warehouse-pro/index.html" class="orbit-node node-2">
+                        <div class="node-icon">🏪</div>
+                        <div class="node-info">
+                            <h3>Gestione Magazzino</h3>
+                            <p>Inventario e controllo scorte</p>
+                            <span class="node-badge badge-active">ATTIVO</span>
+                        </div>
+                    </a>
+
+                    <!-- Nodo 3: Gestione Personale -->
+                    <a href="#" class="orbit-node node-3" onclick="event.preventDefault(); window.showHubModal('Gestione Personale')">
+                        <div class="node-icon">👤</div>
+                        <div class="node-info">
+                            <h3>Gestione Personale</h3>
+                            <p>Team, turni e presenze</p>
+                            <span class="node-badge badge-dev">IN SVILUPPO</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 3rem;">
                     <button class="btn-primary" id="main-start-btn" onclick="window.startHub()">COMINCIA ORA</button>
                     <button class="btn-secondary" style="background: rgba(255,255,255,0.05); border: 1px solid var(--eco-glass-border); color: var(--eco-text-title); padding: 1.2rem 2.5rem; border-radius: 20px; font-weight: 800; cursor: pointer;" onclick="window.resetEcosystem()">RESET DATI</button>
                 </div>
             </section>
 
-            <!-- Why Section -->
+            <!-- ═══ WHY Section ═══ -->
             <section id="why" class="container fade-in" style="display: none; padding-top: 5rem;">
                 <h2 style="text-align: center; color: var(--eco-accent); font-weight: 800; letter-spacing: 0.1em; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 3rem;">Perchè APPSTUDIO PRO 1.0 (R)?</h2>
                 <div class="feature-grid">
                     <div class="feature-card">
                         <span class="feature-icon">🌿</span>
                         <h3 style="color: var(--eco-text-title); margin-bottom: 1rem;">INTEGRAZIONE SEMPLICE</h3>
-                        <p style="font-size: 0.95rem; opacity: 0.8;">Integrazione connessa e semplice</p>
+                        <p style="font-size: 0.95rem; opacity: 0.8;">Ogni app parla la stessa lingua, sincronizzando dati e processi istantaneamente.</p>
                     </div>
                     <div class="feature-card">
                         <span class="feature-icon">⚡</span>
                         <h3 style="color: var(--eco-text-title); margin-bottom: 1rem;">MASSIMA EFFICIENZA</h3>
-                        <p style="font-size: 0.95rem; opacity: 0.8;">Massima efficienza e affidabilità</p>
+                        <p style="font-size: 0.95rem; opacity: 0.8;">Elimina le ridondanze e focalizzati sulla crescita con strumenti ottimizzati.</p>
                     </div>
                     <div class="feature-card">
                         <span class="feature-icon">🛡️</span>
                         <h3 style="color: var(--eco-text-title); margin-bottom: 1rem;">DATI SICURI</h3>
-                        <p style="font-size: 0.95rem; opacity: 0.8;">Dati sicuri in locale e nel cloud</p>
+                        <p style="font-size: 0.95rem; opacity: 0.8;">Crittografia avanzata e backup cloud automatici per proteggere il tuo patrimonio.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Status Section -->
+            <!-- Status -->
             <section class="status-section container fade-in" id="status-section" style="display: none;">
                 <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--eco-text-title); margin-bottom: 2rem;">Il Tuo Ecosistema in Azione</h2>
-                <div class="status-badge">
-                    <div class="pulse-dot"></div>
-                    Sincronizzazione Attiva
-                </div>
+                <div class="status-badge"><div class="pulse-dot"></div>Sincronizzazione Attiva</div>
             </section>
 
+            <!-- ═══ App Cards (after COMINCIA ORA) ═══ -->
             <section id="apps" class="container fade-in" style="display: none; padding: 100px 0;">
-                <h2 style="font-size: 3rem; font-weight: 800; color: var(--eco-text-title); text-align: center; margin-bottom: 5rem;">Sfoglia l'Ecosistema</h2>
+                <h2 style="font-size: 3rem; font-weight: 800; color: var(--eco-text-title); text-align: center; margin-bottom: 2rem;">Sfoglia l'Ecosistema</h2>
+                <p style="text-align: center; color: var(--eco-text-body); margin-bottom: 5rem; font-size: 1.1rem; opacity: 0.7;">Ogni modulo funziona in autonomia, ma insieme creano qualcosa di straordinario.</p>
                 
                 <div class="app-grid">
-                    <!-- Prima Nota Pro -->
                     <a href="prima-nota/index.html" class="glass-card app-card" style="padding-top:1.5rem;">
                         <div class="window-controls" style="align-self: flex-start; margin-bottom: 2.5rem; margin-top: -0.5rem; pointer-events: auto;">
                             <div class="win-dot red" onclick="event.preventDefault(); this.closest('.app-card').style.display='none'"></div>
@@ -103,25 +158,23 @@
                         <div style="margin-top: 2.5rem; color: var(--eco-accent); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">ACCEDI AL MODULO →</div>
                     </a>
 
-                    <!-- Gestione Personale -->
                     <a href="#" class="glass-card app-card" style="text-decoration: none; color: inherit; padding-top:1.5rem;" onclick="window.showHubModal('Gestione Personale')">
                         <div class="window-controls" style="align-self: flex-start; margin-bottom: 2.5rem; margin-top: -0.5rem;">
                             <div class="win-dot red" onclick="event.preventDefault(); this.closest('.app-card').style.display='none'"></div>
                             <div class="win-dot yellow" onclick="event.preventDefault(); window.toggleHubWindow(this.closest('.app-card'), 'minimized')"></div>
                             <div class="win-dot green" onclick="event.preventDefault(); window.toggleHubWindow(this.closest('.app-card'), 'maximized')"></div>
                         </div>
-                        <div class="app-icon" style="background: linear-gradient(135deg, #ad8b6a 0%, #8c6c4c 100%);">👤</div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #9a7a5a 0%, #7a5c3c 100%);">👤</div>
                         <h3>Gestione Personale</h3>
                         <p>Organizza il tuo team, turni, presenze e buste paga. Il tuo ufficio risorse umane digitale.</p>
                         <div style="margin-top: 2.5rem; color: var(--eco-secondary); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">IN SVILUPPO 🔧</div>
                     </a>
 
-                    <!-- Gestione Magazzino -->
                     <a href="warehouse-pro/index.html" class="glass-card app-card" style="text-decoration: none; color: inherit; padding-top:1.5rem;">
                         <div class="window-controls" style="align-self: flex-start; margin-bottom: 2.5rem; margin-top: -0.5rem;">
                             <div class="win-dot red"></div><div class="win-dot yellow"></div><div class="win-dot green"></div>
                         </div>
-                        <div class="app-icon" style="background: linear-gradient(135deg, #7d8c6a 0%, #5d664c 100%);">🏪</div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #5d664c 0%, #3e4433 100%);">🏪</div>
                         <h3>Gestione Magazzino</h3>
                         <p>Inventario dinamico, controllo scorte e analisi del deterioramento. Gestisci ogni pezzo con precisione.</p>
                         <div style="margin-top: 2.5rem; color: var(--eco-accent); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">ACCEDI AL MODULO →</div>
@@ -129,7 +182,7 @@
                 </div>
             </section>
 
-            <!-- Features Section -->
+            <!-- Features -->
             <section class="container fade-in" id="features-section" style="display: none; padding-bottom: 150px;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem;">
                     <div class="glass-card" style="padding: 3rem; text-align: center;">
@@ -161,7 +214,6 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.6;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     Powered by Antigravity Digital Studio
                 </p>
-
             </div>
         </footer>
     </div>
@@ -220,19 +272,15 @@
                     <div class="modal-body">
                         <h2 style="font-size:1.8rem; margin-bottom:1rem; color:var(--eco-text-title);">Connessione Mobile</h2>
                         <p style="margin-bottom:2rem; opacity:0.7; font-size:0.9rem;">Configura il tuo database Supabase per sincronizzare i dati con il tuo smartphone Android.</p>
-                        
                         <div style="margin-bottom:1.5rem;">
                             <label style="display:block; font-weight:800; font-size:0.75rem; color:var(--eco-accent); margin-bottom:0.5rem; text-transform:uppercase;">Supabase Project URL</label>
                             <input type="text" id="set-url" value="${url}" placeholder="https://xyz.supabase.co" class="hub-input" style="margin-bottom:0;">
                         </div>
-                        
                         <div style="margin-bottom:2rem;">
                             <label style="display:block; font-weight:800; font-size:0.75rem; color:var(--eco-accent); margin-bottom:0.5rem; text-transform:uppercase;">Supabase Anon Key</label>
                             <input type="password" id="set-key" value="${key}" placeholder="eyJhbG..." class="hub-input" style="margin-bottom:0;">
                         </div>
-
                         <button class="btn-primary" style="width:100%;" onclick="window.saveCloudSettings()">SALVA E ATTIVA CLOUD ☁️</button>
-                        
                         <div style="margin-top:2rem; padding:1.5rem; background:rgba(93,102,76,0.05); border-radius:16px; border:1px solid var(--eco-glass-border);">
                             <h4 style="margin:0 0 0.5rem 0; font-size:0.85rem; color:var(--eco-accent);">Guida Mobile Rapida</h4>
                             <p style="font-size:0.8rem; margin:0; opacity:0.7;">1. Copia i dati dal tuo account Supabase.<br>2. Salva qui sul computer.<br>3. Apri lo stesso link dal tuo Android e troverai tutto già configurato!</p>
