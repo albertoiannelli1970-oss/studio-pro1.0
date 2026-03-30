@@ -103,18 +103,18 @@
                         <div style="margin-top: 2.5rem; color: var(--eco-accent); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">ACCEDI AL MODULO →</div>
                     </a>
 
-                    <!-- CRM Pro -->
-                    <div class="glass-card app-card" style="opacity: 0.7; padding-top:1.5rem;">
+                    <!-- Gestione Personale -->
+                    <a href="#" class="glass-card app-card" style="text-decoration: none; color: inherit; padding-top:1.5rem;" onclick="window.showHubModal('Gestione Personale')">
                         <div class="window-controls" style="align-self: flex-start; margin-bottom: 2.5rem; margin-top: -0.5rem;">
-                            <div class="win-dot red" onclick="this.closest('.app-card').style.display='none'"></div>
-                            <div class="win-dot yellow" onclick="window.toggleHubWindow(this.closest('.app-card'), 'minimized')"></div>
-                            <div class="win-dot green" onclick="window.toggleHubWindow(this.closest('.app-card'), 'maximized')"></div>
+                            <div class="win-dot red" onclick="event.preventDefault(); this.closest('.app-card').style.display='none'"></div>
+                            <div class="win-dot yellow" onclick="event.preventDefault(); window.toggleHubWindow(this.closest('.app-card'), 'minimized')"></div>
+                            <div class="win-dot green" onclick="event.preventDefault(); window.toggleHubWindow(this.closest('.app-card'), 'maximized')"></div>
                         </div>
-                        <div class="app-icon" style="background: linear-gradient(135deg, #ad8b6a 0%, #8c6c4c 100%);">👥</div>
-                        <h3>CRM Connect</h3>
-                        <p>Anagrafica clienti intelligente, cronologia interazioni e lead tracking. La tua rubrica professionale 2.0.</p>
-                        <div style="margin-top: 2.5rem; color: var(--eco-text-body); font-weight: 800; font-size: 0.85rem; opacity:0.6;">PROSSIMAMENTE</div>
-                    </div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #ad8b6a 0%, #8c6c4c 100%);">👤</div>
+                        <h3>Gestione Personale</h3>
+                        <p>Organizza il tuo team, turni, presenze e buste paga. Il tuo ufficio risorse umane digitale.</p>
+                        <div style="margin-top: 2.5rem; color: var(--eco-secondary); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">IN SVILUPPO 🔧</div>
+                    </a>
 
                     <!-- Gestione Magazzino -->
                     <a href="warehouse-pro/index.html" class="glass-card app-card" style="text-decoration: none; color: inherit; padding-top:1.5rem;">
