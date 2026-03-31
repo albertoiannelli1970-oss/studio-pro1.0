@@ -48,33 +48,34 @@ body::before {
 /* --- SIDEBAR --- */
 #sidebar {
     width: var(--sidebar-width); height: 100vh; 
-    background: rgba(93, 102, 76, 0.85); /* Semi-transparent sage */
+    background: rgba(93, 102, 76, 0.85);
     backdrop-filter: blur(20px);
     border-right: 1px solid var(--glass-border);
-    display: flex; flex-direction: column; padding: 2.5rem 1.2rem;
+    display: flex; flex-direction: column; padding: 2rem 1rem;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); position: relative; z-index: 100;
+    overflow-y: auto;
 }
 #sidebar.collapsed { width: var(--sidebar-collapsed); }
 
-.sidebar-brand { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 3.5rem; padding-left: 0.5rem; }
-.brand-logo { width: 44px; height: 44px; border-radius: 12px; }
-.brand-name { font-weight: 800; font-size: 1.4rem; letter-spacing: -0.04em; color: #fff; }
+.sidebar-brand { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding: 0 0.6rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.brand-logo { width: 38px; height: 38px; border-radius: 10px; }
+.brand-name { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; color: #fff; }
 .collapsed .brand-name { opacity: 0; pointer-events: none; }
 
-.nav-group { display: flex; flex-direction: column; gap: 0.8rem; flex-grow: 1; }
+.nav-group { display: flex; flex-direction: column; gap: 0.35rem; flex-grow: 1; }
 .nav-link { 
-    display: flex; align-items: center; gap: 1.2rem; padding: 1rem 1.4rem; 
-    border-radius: 16px; cursor: pointer; color: rgba(255,255,255,0.7); font-weight: 600; 
+    display: flex; align-items: center; gap: 0.9rem; padding: 0.75rem 1rem; 
+    border-radius: 12px; cursor: pointer; color: rgba(255,255,255,0.7); font-weight: 600; 
     transition: all 0.25s ease; text-decoration: none; border: 1px solid transparent; 
 }
-.nav-link:hover { background: rgba(255, 255, 255, 0.08); color: #fff; transform: translateX(5px); }
+.nav-link:hover { background: rgba(255, 255, 255, 0.08); color: #fff; transform: translateX(3px); }
 .nav-link.active { 
     background: rgba(255, 255, 255, 0.15); color: #fff; 
     border-color: rgba(255, 255, 255, 0.2); 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.nav-icon { font-size: 1.3rem; }
-.nav-text { white-space: nowrap; transition: opacity 0.3s; font-size: 0.95rem; }
+.nav-icon { font-size: 1.15rem; width: 24px; text-align: center; flex-shrink: 0; }
+.nav-text { white-space: nowrap; transition: opacity 0.3s; font-size: 0.85rem; }
 .collapsed .nav-text { opacity: 0; pointer-events: none; }
 
 .sidebar-footer { padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
