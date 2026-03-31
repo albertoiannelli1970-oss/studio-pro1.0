@@ -30,8 +30,13 @@ window.showSection = (name) => {
         console.error('content-area not found');
         return;
     }
-    // Also update global reference
+    // Update global + scroll to top + ensure splash hidden
     window.mainContent = mainContent;
+    mainContent.scrollTop = 0;
+    const splash = document.getElementById('splash-screen');
+    if (splash) splash.style.display = 'none';
+    const shell = document.getElementById('app-shell');
+    if (shell) shell.style.display = 'flex';
 
     mainContent.className = 'fade-in';
     
