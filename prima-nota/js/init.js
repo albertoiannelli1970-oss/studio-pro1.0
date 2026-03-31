@@ -73,17 +73,34 @@ window.showSection = (name) => {
 // --- WINDOW CONTROLS ---
 window.toggleMinimize = (el) => {
     const card = el.closest('.glass-card') || el.closest('.form-card');
-    if (card) card.classList.toggle('minimized');
+    if (!card) return;
+    card.classList.remove('maximized');
+    card.classList.toggle('minimized');
 };
 
 window.toggleMaximize = (el) => {
     const card = el.closest('.glass-card') || el.closest('.form-card');
-    if (card) card.classList.toggle('maximized');
+    if (!card) return;
+    card.classList.remove('minimized');
+    const isMax = card.classList.toggle('maximized');
+    // ESC key to exit fullscreen
+    if (isMax) {
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                card.classList.remove('maximized');
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
 };
 
 window.closeCard = (el) => {
-    const overlay = el.closest('.modal-overlay') || el.closest('.onboarding-card');
-    if (overlay) overlay.remove(); else window.showSection('dashboard');
+    const overlay = el.closest('.modal-overlay');
+    if (overlay) { overlay.remove(); return; }
+    const card = el.closest('.glass-card') || el.closest('.form-card');
+    if (card) { card.classList.remove('minimized', 'maximized'); }
+    window.showSection('dashboard');
 };
 
 window.logout = () => {

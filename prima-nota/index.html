@@ -148,11 +148,11 @@ body::before {
 @keyframes modalSlide { from { opacity: 0; transform: translateY(60px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
 /* Window States */
-.glass-card.minimized, .form-card.minimized { height: 60px !important; overflow: hidden; border-radius: 16px; margin-bottom: 0; width: 300px !important; position: fixed; bottom: 20px; left: calc(var(--sidebar-width) + 20px); z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: var(--eco-primary); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.collapsed + #main-container .glass-card.minimized, .collapsed ~ .modal-overlay .form-card.minimized { left: calc(var(--sidebar-collapsed) + 20px); }
-
-.glass-card.maximized, .form-card.maximized { position: fixed; top: 10px; left: calc(var(--sidebar-width) + 10px); width: calc(100vw - var(--sidebar-width) - 20px); height: calc(100vh - 20px); z-index: 2000; border-radius: 24px; box-shadow: 0 0 100px rgba(0,0,0,0.5); background: #fff !important; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
-.form-card.maximized { left: 10px !important; width: calc(100vw - 20px) !important; max-width: none !important; max-height: none !important; }
+.glass-card.minimized { max-height: 65px; overflow: hidden; transition: all 0.3s ease; opacity: 0.7; }
+.glass-card.minimized:hover { opacity: 1; }
+.glass-card.maximized { position: fixed; top: 0; left: 0; width: 100vw !important; height: 100vh !important; max-width: none !important; z-index: 3000; border-radius: 0; box-shadow: none; background: #fff !important; overflow-y: auto; transition: all 0.3s ease; }
+.form-card.minimized { max-height: 55px; overflow: hidden; }
+.form-card.maximized { max-width: 95vw !important; max-height: 90vh; overflow-y: auto; }
 .collapsed + #main-container .glass-card.maximized, .collapsed ~ .modal-overlay .form-card.maximized { left: calc(var(--sidebar-collapsed) + 10px); width: calc(100vw - var(--sidebar-collapsed) - 20px); }
 
 /* Form Elements */
@@ -324,7 +324,7 @@ body::before {
 
     
     <!-- App Entry Point -->
-    <script src="js/init.js"></script>
+    <script src="js/init.js?v=2"></script>
 
 </body>
 </html>
