@@ -66,6 +66,7 @@ window.showSection = (name) => {
         case 'consolle': if(window.renderConsolle) window.renderConsolle(); else { mainContent.innerHTML = '<div class="glass-card fade-in" style="max-width:1200px; width:100%; padding:3rem;"><h2 style="color:var(--eco-text-title);">⚙️ Consolle API</h2><p style="color:var(--eco-text-body); margin-top:1rem;">Area sviluppatori per integrazioni e connessioni API esterne.</p><p style="color:var(--eco-accent); margin-top:2rem;">🔧 Modulo in fase di sviluppo avanzato.</p></div>'; } break;
         case 'studio': if(window.renderStudio) window.renderStudio(); break;
         case 'stampa': if(window.renderStampa) window.renderStampa(); break;
+        case 'food-cost': if(window.renderFoodCost) window.renderFoodCost(); break;
         default: if(window.renderDashboard) window.renderDashboard();
     }
 };
@@ -128,7 +129,10 @@ window.addEventListener('DOMContentLoaded', () => {
         // Initialize Supabase if available
         if (window.initSupabase) window.initSupabase();
         
-        window.showSection('dashboard');
+        const params = new URLSearchParams(window.location.search);
+        const section = params.get('section');
+        if (section) window.showSection(section);
+        else window.showSection('dashboard');
     } else {
         // Start Onboarding
         if (window.startOnboarding) window.startOnboarding();

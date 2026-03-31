@@ -221,11 +221,35 @@ class SupplierManager {
     }
 }
 
+class FoodCostManager {
+    constructor() {
+        this.recipes = JSON.parse(localStorage.getItem('pn_recipes')) || [];
+        this.ingredients = JSON.parse(localStorage.getItem('pn_ingredients')) || [];
+    }
+    save() {
+        localStorage.setItem('pn_recipes', JSON.stringify(this.recipes));
+        localStorage.setItem('pn_ingredients', JSON.stringify(this.ingredients));
+    }
+    addIngredient(name, unit, price) {
+        const id = Date.now();
+        this.ingredients.push({ id, name, unit, price: parseFloat(price), createdAt: new Date().toISOString() });
+        this.save();
+        return id;
+    }
+    addRecipe(name, category, ingredients = [], fixedCosts = 0) {
+        const id = Date.now();
+        this.recipes.push({ id, name, category, ingredients, fixedCosts: parseFloat(fixedCosts), createdAt: new Date().toISOString() });
+        this.save();
+        return id;
+    }
+}
+
 const catManager = new CategoryManager();
 const transManager = new TransactionManager();
 const clientManager = new ClientManager();
 const invManager = new InventoryManager();
 const supplierManager = new SupplierManager();
+const foodManager = new FoodCostManager();
 
 function logout() {
     localStorage.removeItem('pn_user_type');
