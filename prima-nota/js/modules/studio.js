@@ -36,3 +36,4 @@ function renderStudio() {
     `;
 }
 
+window.renderStudio = renderStudio;

@@ -1,4 +1,4 @@
-// Prima Nota Pro 1.0® - Inventory Module
+// Prima Nota Pro 1.0® - Inventory Module (Fully Active)
 
 function renderInventory() {
     const items = invManager.getItems();
@@ -10,10 +10,10 @@ function renderInventory() {
             <div style="padding:2.5rem;">
                 ${window.renderPageHero("Monitoraggio Scorte", "Gestisci il magazzino e controlla le giacenze critiche.", "MAGAZZINO")}
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
-                    <div style="display: flex; gap: 1rem;">
-                        <input type="text" placeholder="Cerca merce..." class="hub-input" style="width: 300px; margin-bottom: 0;" onkeyup="window.filterInventory(this.value)">
-                        <select class="hub-input" style="width: 200px; margin-bottom: 0;" onchange="window.filterInventoryByCategory(this.value)">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; flex-wrap:wrap; gap:1rem;">
+                    <div style="display: flex; gap: 1rem; flex-wrap:wrap;">
+                        <input type="text" placeholder="Cerca merce..." class="pn-input" style="width: 250px; margin-bottom: 0;" id="inv-search" onkeyup="window.filterInventory(this.value)">
+                        <select class="pn-input" style="width: 200px; margin-bottom: 0;" onchange="window.filterInventoryByCategory(this.value)">
                             <option value="">Tutte le Categorie</option>
                             <option value="Alimentari">Alimentari</option>
                             <option value="Bevande">Bevande</option>
@@ -35,7 +35,7 @@ function renderInventory() {
                             </tr>
                         </thead>
                         <tbody id="inventory-table-body">
-                            ${items.map(item => renderInventoryRow(item)).join('')}
+                            ${items.length === 0 ? '<tr><td colspan="5" style="text-align:center; padding:3rem; opacity:0.5;">Nessun articolo in inventario.</td></tr>' : items.map(item => renderInventoryRow(item)).join('')}
                         </tbody>
                     </table>
                 </div>
@@ -50,7 +50,7 @@ function renderInventoryRow(item) {
         <tr style="border-bottom: 1px solid var(--glass-border); background: ${isLow ? 'rgba(230, 126, 34, 0.05)' : 'transparent'};">
             <td style="padding: 1.5rem 2rem; font-weight: 700; color: var(--eco-text-title);">${item.name}</td>
             <td style="padding: 1.5rem 2rem; opacity: 0.7;">${item.category}</td>
-            <td style="padding: 1.5rem 2rem; text-align: center; font-weight: 800; color: ${isLow ? '#e67e22' : 'var(--eco-primary)'};">
+            <td style="padding: 1.5rem 2rem; text-align: center; font-weight: 800; color: ${isLow ? '#e67e22' : 'var(--eco-accent)'};">
                 ${item.quantity} ${item.unit}
             </td>
             <td style="padding: 1.5rem 2rem; text-align: center;">
@@ -58,22 +58,114 @@ function renderInventoryRow(item) {
                     ${isLow ? 'CRITICO' : 'OK'}
                 </span>
             </td>
-            <td style="padding: 1.5rem 2rem; text-align: right;">
-                <button class="win-dot yellow" title="Modifica" onclick="window.showInventoryForm(${item.id})"></button>
-                <button class="win-dot green" title="Carica/Scarica" onclick="window.showStockUpdate(${item.id})"></button>
+            <td style="padding: 1.5rem 2rem; text-align: right; display:flex; gap:0.5rem; justify-content:flex-end;">
+                <button class="btn-secondary" style="padding:0.4rem 0.8rem; font-size:0.7rem; border-radius:8px;" onclick="window.showInventoryForm(${item.id})">✏️ Modifica</button>
+                <button class="btn-secondary" style="padding:0.4rem 0.8rem; font-size:0.7rem; border-radius:8px;" onclick="window.showStockUpdate(${item.id})">📦 Carica/Scarica</button>
+                <button class="win-dot red" title="Elimina" onclick="window.deleteInventoryItem(${item.id})"></button>
             </td>
         </tr>
     `;
 }
 
-window.renderInventory = renderInventory;
+// --- Inventory Form ---
 window.showInventoryForm = (id = null) => {
-    alert("Modulo in fase di attivazione: Form Articolo");
+    const item = id ? invManager.getItems().find(i => i.id === id) : {};
+    const isEdit = !!id;
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+    overlay.innerHTML = `
+        <div class="form-card" style="max-width:550px;">
+            ${window.getCardHeader(isEdit ? 'MODIFICA ARTICOLO' : 'NUOVO ARTICOLO', 'this.closest(".modal-overlay").remove()')}
+            <div style="padding:2rem; display:flex; flex-direction:column; gap:1.2rem;">
+                <div><label class="input-label">Nome Articolo *</label><input class="pn-input" id="inv-name" value="${item.name||''}" placeholder="Es. Farina Tipo 0"></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div><label class="input-label">Quantità *</label><input type="number" class="pn-input" id="inv-qty" value="${item.quantity||''}" placeholder="0" step="0.1"></div>
+                    <div><label class="input-label">Unità</label><input class="pn-input" id="inv-unit" value="${item.unit||'kg'}" placeholder="kg, L, pz..."></div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div><label class="input-label">Scorta Minima</label><input type="number" class="pn-input" id="inv-min" value="${item.minStock||10}" step="1"></div>
+                    <div><label class="input-label">Categoria</label>
+                        <select class="pn-input" id="inv-cat">
+                            <option ${item.category==='Alimentari'?'selected':''}>Alimentari</option>
+                            <option ${item.category==='Bevande'?'selected':''}>Bevande</option>
+                            <option ${item.category==='Materiale Consumo'?'selected':''}>Materiale Consumo</option>
+                            <option ${item.category==='Attrezzature'?'selected':''}>Attrezzature</option>
+                            <option ${item.category==='Altro'?'selected':''}>Altro</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-primary" style="width:100%; margin-top:0.5rem;" onclick="window.saveInventoryItem(${id || 'null'})">${isEdit ? 'SALVA MODIFICHE' : 'AGGIUNGI ARTICOLO'}</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
 };
+
+window.saveInventoryItem = (id) => {
+    const name = document.getElementById('inv-name').value.trim();
+    const quantity = parseFloat(document.getElementById('inv-qty').value);
+    const unit = document.getElementById('inv-unit').value.trim() || 'kg';
+    const minStock = parseFloat(document.getElementById('inv-min').value) || 10;
+    const category = document.getElementById('inv-cat').value;
+    if (!name || isNaN(quantity)) return alert('Compila Nome e Quantità.');
+    if (id) {
+        const item = invManager.items.find(i => i.id === id);
+        if (item) { Object.assign(item, { name, quantity, unit, minStock, category }); invManager.save(); }
+    } else {
+        invManager.addItem(name, quantity, unit, minStock, category);
+    }
+    document.querySelector('.modal-overlay').remove();
+    renderInventory();
+};
+
 window.showStockUpdate = (id) => {
-    const qty = prompt("Quantità da aggiungere (usa negativo per scaricare):");
-    if (qty && !isNaN(qty)) {
-        invManager.updateQuantity(id, qty);
+    const item = invManager.getItems().find(i => i.id === id);
+    if (!item) return;
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+    overlay.innerHTML = `
+        <div class="form-card" style="max-width:420px;">
+            ${window.getCardHeader(`CARICA/SCARICA: ${item.name}`, 'this.closest(".modal-overlay").remove()')}
+            <div style="padding:2rem; display:flex; flex-direction:column; gap:1.2rem;">
+                <p style="opacity:0.7; text-align:center;">Giacenza attuale: <strong>${item.quantity} ${item.unit}</strong></p>
+                <div><label class="input-label">Quantità (usa negativo per scaricare)</label><input type="number" class="pn-input" id="stock-change" placeholder="Es. +10 o -5" step="0.1"></div>
+                <button class="btn-primary" style="width:100%;" onclick="window.applyStockChange(${id})">APPLICA</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+};
+
+window.applyStockChange = (id) => {
+    const change = parseFloat(document.getElementById('stock-change').value);
+    if (isNaN(change)) return alert('Inserisci una quantità valida.');
+    invManager.updateQuantity(id, change);
+    document.querySelector('.modal-overlay').remove();
+    renderInventory();
+};
+
+window.deleteInventoryItem = (id) => {
+    if (confirm('Eliminare questo articolo?')) {
+        invManager.items = invManager.items.filter(i => i.id !== id);
+        invManager.save();
         renderInventory();
     }
 };
+
+window.filterInventory = (query) => {
+    const items = invManager.getItems().filter(i => i.name.toLowerCase().includes(query.toLowerCase()));
+    document.getElementById('inventory-table-body').innerHTML = items.length === 0 
+        ? '<tr><td colspan="5" style="text-align:center; padding:3rem; opacity:0.5;">Nessun risultato.</td></tr>'
+        : items.map(i => renderInventoryRow(i)).join('');
+};
+
+window.filterInventoryByCategory = (cat) => {
+    const items = cat ? invManager.getItems().filter(i => i.category === cat) : invManager.getItems();
+    document.getElementById('inventory-table-body').innerHTML = items.length === 0 
+        ? '<tr><td colspan="5" style="text-align:center; padding:3rem; opacity:0.5;">Nessun risultato.</td></tr>'
+        : items.map(i => renderInventoryRow(i)).join('');
+};
+
+window.renderInventory = renderInventory;
