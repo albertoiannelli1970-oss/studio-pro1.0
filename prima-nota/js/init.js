@@ -20,11 +20,18 @@ window.renderSuppliers = window.renderSuppliers || (typeof renderSuppliers !== '
 window.renderClienti = window.renderClienti || (typeof renderClienti !== 'undefined' ? renderClienti : () => {});
 window.renderPrivacySection = window.renderPrivacy || (typeof renderPrivacy !== 'undefined' ? renderPrivacy : () => {});
 window.renderContatti = window.renderContatti || (typeof renderContatti !== 'undefined' ? renderContatti : () => {});
+window.renderStudio = window.renderStudio || (typeof renderStudio !== 'undefined' ? renderStudio : () => {});
+window.renderStampa = window.renderStampa || (typeof renderStampa !== 'undefined' ? renderStampa : () => {});
 
 // --- ROUTING ENGINE ---
 window.showSection = (name) => {
-    const mainContent = document.getElementById('main-content');
-    if (!mainContent) return;
+    const mainContent = document.getElementById('content-area');
+    if (!mainContent) {
+        console.error('content-area not found');
+        return;
+    }
+    // Also update global reference
+    window.mainContent = mainContent;
 
     mainContent.className = 'fade-in';
     
@@ -50,6 +57,10 @@ window.showSection = (name) => {
         case 'clienti': if(window.renderClienti) window.renderClienti(); break;
         case 'privacy': if(window.renderPrivacySection) window.renderPrivacySection(); break;
         case 'contatti': if(window.renderContatti) window.renderContatti(); break;
+        case 'categorie': if(window.renderCategories) window.renderCategories(); break;
+        case 'consolle': if(window.renderConsolle) window.renderConsolle(); else { mainContent.innerHTML = '<div class="glass-card fade-in" style="max-width:1200px; width:100%; padding:3rem;"><h2 style="color:var(--eco-text-title);">⚙️ Consolle API</h2><p style="color:var(--eco-text-body); margin-top:1rem;">Area sviluppatori per integrazioni e connessioni API esterne.</p><p style="color:var(--eco-accent); margin-top:2rem;">🔧 Modulo in fase di sviluppo avanzato.</p></div>'; } break;
+        case 'studio': if(window.renderStudio) window.renderStudio(); break;
+        case 'stampa': if(window.renderStampa) window.renderStampa(); break;
         default: if(window.renderDashboard) window.renderDashboard();
     }
 };
@@ -85,12 +96,12 @@ window.addEventListener('DOMContentLoaded', () => {
     // Reference common elements
     window.splashScreen = document.getElementById('splash-screen');
     window.mainShell = document.getElementById('app-shell');
-    window.mainContent = document.getElementById('main-content');
+    window.mainContent = document.getElementById('content-area');
 
     if (userType && userName) {
         // Fast-path to Dashboard
         if (window.splashScreen) window.splashScreen.style.display = 'none';
-        if (window.mainShell) window.mainShell.style.display = 'grid';
+        if (window.mainShell) window.mainShell.style.display = 'flex';
         
         // Initialize Supabase if available
         if (window.initSupabase) window.initSupabase();
