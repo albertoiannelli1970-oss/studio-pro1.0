@@ -47,4 +47,54 @@ function renderPageHero(title, sub, icon) {
         <p style="color:var(--eco-text-body); font-size:1.1rem; margin-top:0.4rem; opacity:0.8;">${sub}</p>
     </div>`;
 }
+// --- NOTIFICHE & VALIDAZIONE ---
+window.showToast = (message, type = 'info', duration = 4000) => {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+    toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 400);
+    }, duration);
+};
 
+window.Validator = {
+    isMoney: (val) => !isNaN(parseFloat(val)) && isFinite(val) && parseFloat(val) >= 0,
+    isNotEmpty: (val) => val && val.trim().length > 0,
+    isDate: (val) => !isNaN(new Date(val).getTime()),
+    
+    validateField: (inputId, type) => {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        let isValid = false;
+        const val = input.value;
+        
+        switch(type) {
+            case 'money': isValid = window.Validator.isMoney(val); break;
+            case 'text': isValid = window.Validator.isNotEmpty(val); break;
+            case 'date': isValid = window.Validator.isDate(val); break;
+            default: isValid = true;
+        }
+        
+        if (!isValid) {
+            input.classList.add('error');
+            setTimeout(() => input.classList.remove('error'), 2000);
+            return false;
+        }
+        input.classList.remove('error');
+        return true;
+    }
+};
+
+window.formatMoney = (amount) => {
+    return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(amount);
+};

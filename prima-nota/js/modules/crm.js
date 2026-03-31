@@ -26,12 +26,17 @@ function renderClienti() {
 function renderClientList(clients) {
     if (clients.length === 0) return `<div class="glass-card" style="grid-column: 1/-1; padding: 3rem; text-align: center; color: #64748b;">Nessun cliente trovato.</div>`;
     return clients.map(c => `
-        <div class="glass-card fade-in" style="padding: 1.5rem; border-left: 4px solid var(--pn-indigo);">
-            <h3 style="margin-bottom: 0.5rem;">${c.name}</h3>
-            <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1rem;">${c.email}</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; margin-top: 1rem;">
+        <div class="glass-card fade-in" style="padding: 1.5rem; border-left: 4px solid var(--pn-indigo); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+                <h3 style="margin-bottom: 0.5rem; font-size:1.1rem;">${c.name}</h3>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1rem;">${c.email}</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem; margin-top: 1rem;">
                 <span style="font-size: 0.75rem; color: #64748b;">📍 ${c.city}</span>
-                <button class="btn-icon-small">✏️</button>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="win-dot yellow" onclick="window.editClient(${c.id})"></button>
+                    <button class="win-dot red" onclick="window.deleteClient(${c.id})"></button>
+                </div>
             </div>
         </div>
     `).join('');
@@ -75,16 +80,77 @@ function showClientForm() {
     document.body.appendChild(overlay);
 }
 
-function confirmAddClient() {
+window.confirmAddClient = () => {
+    const nameVal = window.Validator.validateField('new-client-name', 'text');
+    const emailVal = window.Validator.validateField('new-client-email', 'text');
+    
+    if (!nameVal || !emailVal) {
+        window.showToast("Nome ed Email sono obbligatori", "error");
+        return;
+    }
+
     const name = document.getElementById('new-client-name').value;
     const email = document.getElementById('new-client-email').value;
     const city = document.getElementById('new-client-city').value;
     
-    if (name && email) {
-        clientManager.addClient(name, email, city);
+    clientManager.addClient(name, email, city);
+    window.showToast("Cliente registrato", "success");
+    document.querySelector('.modal-overlay').remove();
+    renderClienti();
+};
+
+window.editClient = (id) => {
+    const client = clientManager.getClients().find(c => c.id === id);
+    if (!client) return;
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay fade-in';
+    overlay.innerHTML = `
+        <div class="form-card" style="max-width: 450px;">
+            ${getCardHeader('MODIFICA CLIENTE', 'this.closest(\'.modal-overlay\').remove()')}
+            <div class="card-body" style="padding: 2rem;">
+                <label class="input-label">Ragione Sociale</label>
+                <input type="text" id="edit-client-name" class="pn-input" value="${client.name}">
+                <label class="input-label" style="margin-top: 1rem;">Email</label>
+                <input type="email" id="edit-client-email" class="pn-input" value="${client.email}">
+                <label class="input-label" style="margin-top: 1rem;">Città</label>
+                <input type="text" id="edit-client-city" class="pn-input" value="${client.city}">
+                <button class="btn-primary" style="width: 100%; margin-top: 2rem;" onclick="window.confirmEditClient(${id})">SALVA MODIFICHE</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+};
+
+window.confirmEditClient = (id) => {
+    const nameVal = window.Validator.validateField('edit-client-name', 'text');
+    if (!nameVal) return;
+
+    const name = document.getElementById('edit-client-name').value;
+    const email = document.getElementById('edit-client-email').value;
+    const city = document.getElementById('edit-client-city').value;
+    
+    const client = clientManager.clients.find(c => c.id === id);
+    if (client) {
+        Object.assign(client, { name, email, city, updatedAt: new Date().toISOString() });
+        clientManager.save();
+        window.showToast("Cliente aggiornato", "success");
         document.querySelector('.modal-overlay').remove();
         renderClienti();
-    } else {
-        alert('Nome ed Email sono obbligatori.');
     }
-}
+};
+
+window.deleteClient = (id) => {
+    if (confirm("Eliminare definitivamente questo cliente?")) {
+        clientManager.clients = clientManager.clients.filter(c => c.id !== id);
+        clientManager.save();
+        window.showToast("Cliente eliminato", "success");
+        renderClienti();
+    }
+};
+
+// Ensure globals
+window.renderClienti = renderClienti;
+window.filterClients = filterClients;
+window.showClientForm = showClientForm;
+window.confirmAddClient = confirmAddClient;

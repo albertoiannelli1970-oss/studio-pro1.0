@@ -103,15 +103,27 @@ window.showInventoryForm = (id = null) => {
 };
 
 window.saveInventoryItem = (id) => {
+    const nameValid = window.Validator.validateField('inv-name', 'text');
+    const qtyValid = window.Validator.validateField('inv-qty', 'money');
+    
+    if (!nameValid || !qtyValid) {
+        window.showToast("Controlla i campi evidenziati in rosso", "error");
+        return;
+    }
+
     const name = document.getElementById('inv-name').value.trim();
     const quantity = parseFloat(document.getElementById('inv-qty').value);
     const unit = document.getElementById('inv-unit').value.trim() || 'kg';
     const minStock = parseFloat(document.getElementById('inv-min').value) || 10;
     const category = document.getElementById('inv-cat').value;
-    if (!name || isNaN(quantity)) return alert('Compila Nome e Quantità.');
+
     if (id) {
         const item = invManager.items.find(i => i.id === id);
-        if (item) { Object.assign(item, { name, quantity, unit, minStock, category }); invManager.save(); }
+        if (item) { 
+            Object.assign(item, { name, quantity, unit, minStock, category, updatedAt: new Date().toISOString() }); 
+            invManager.save(); 
+            window.showToast("Articolo aggiornato", "success");
+        }
     } else {
         invManager.addItem(name, quantity, unit, minStock, category);
     }
@@ -139,9 +151,13 @@ window.showStockUpdate = (id) => {
 };
 
 window.applyStockChange = (id) => {
+    if (!window.Validator.validateField('stock-change', 'money')) {
+        window.showToast("Inserisci una quantità valida", "error");
+        return;
+    }
     const change = parseFloat(document.getElementById('stock-change').value);
-    if (isNaN(change)) return alert('Inserisci una quantità valida.');
     invManager.updateQuantity(id, change);
+    window.showToast(`Giacenza aggiornata (${change > 0 ? '+' : ''}${change})`, "success");
     document.querySelector('.modal-overlay').remove();
     renderInventory();
 };

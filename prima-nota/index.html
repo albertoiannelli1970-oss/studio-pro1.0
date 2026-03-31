@@ -155,7 +155,23 @@ body::before {
 .form-card.maximized { max-width: 95vw !important; max-height: 90vh; overflow-y: auto; }
 .collapsed + #main-container .glass-card.maximized, .collapsed ~ .modal-overlay .form-card.maximized { left: calc(var(--sidebar-collapsed) + 10px); width: calc(100vw - var(--sidebar-collapsed) - 20px); }
 
-/* Form Elements */
+/* Toast Notifications */
+#toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast { 
+    min-width: 300px; padding: 1rem 1.5rem; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+    border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: 0 15px 30px rgba(0,0,0,0.1); 
+    display: flex; align-items: center; gap: 12px; pointer-events: auto; animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    color: var(--eco-text-title); font-weight: 600; font-size: 0.9rem;
+}
+.toast.success { border-left: 5px solid #27ae60; }
+.toast.error { border-left: 5px solid #e74c3c; }
+.toast.info { border-left: 5px solid var(--pn-indigo); }
+@keyframes toastIn { from { transform: translateX(100%) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+.toast.fade-out { animation: toastOut 0.4s forwards; }
+@keyframes toastOut { to { transform: translateX(100%); opacity: 0; } }
+
+.pn-input.error { border-color: #e74c3c !important; background: rgba(231, 76, 60, 0.05) !important; animation: shake 0.4s; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 .pn-input { width: 100%; padding: 1.1rem 1.4rem; background: rgba(255,255,255,0.5); border: 1px solid var(--glass-border); border-radius: 16px; color: var(--eco-text-title); font-size: 1rem; outline: none; transition: all 0.2s; }
 .pn-input:focus { border-color: var(--eco-accent); background: #fff; }
 .input-label { display: block; margin-bottom: 0.6rem; font-size: 0.85rem; font-weight: 800; color: var(--eco-accent); text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; }

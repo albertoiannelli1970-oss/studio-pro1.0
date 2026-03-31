@@ -20,7 +20,7 @@ function renderCatConfig() {
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                                 <h3 style="margin: 0; font-size: 1.3rem; color: var(--eco-text-title);">${cat.name}</h3>
                                 <div style="display: flex; gap: 0.5rem;">
-                                    <button class="win-dot yellow" onclick="window.editCat(${cat.id})"></button>
+                                    <button class="win-dot yellow" onclick="window.editCat(${cat.id}, '${cat.name.replace(/'/g, "\\'")}')"></button>
                                     <button class="win-dot red" onclick="window.deleteCat(${cat.id})"></button>
                                 </div>
                             </div>
@@ -30,8 +30,8 @@ function renderCatConfig() {
                                     <div style="padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center;">
                                         <span style="font-weight: 700; font-size: 0.9rem;">${sub.name}</span>
                                         <div style="display: flex; gap: 0.4rem;">
-                                            <button class="win-dot yellow" style="width:12px; height:12px;" onclick="window.editSub(${cat.id}, '${sub.name}')"></button>
-                                            <button class="win-dot red" style="width:12px; height:12px;" onclick="window.deleteSub(${cat.id}, '${sub.name}')"></button>
+                                            <button class="win-dot yellow" style="width:12px; height:12px;" onclick="window.editSub(${cat.id}, '${sub.name.replace(/'/g, "\\'")}', true)"></button>
+                                            <button class="win-dot red" style="width:12px; height:12px;" onclick="window.deleteSub(${cat.id}, '${sub.name.replace(/'/g, "\\'")}', true)"></button>
                                         </div>
                                     </div>
                                 `).join('')}

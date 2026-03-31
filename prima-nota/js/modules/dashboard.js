@@ -111,3 +111,5 @@ function initDashboardChart(totals) {
     });
 }
 
+window.renderDashboard = renderDashboard;
+

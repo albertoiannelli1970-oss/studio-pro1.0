@@ -29,7 +29,8 @@ class CategoryManager {
 
     save() {
         localStorage.setItem('pn_cat_ristorante', JSON.stringify(this.categories));
-        localStorage.setItem('pn_categories', JSON.stringify(this.categories)); // Backward compatibility
+        localStorage.setItem('pn_categories', JSON.stringify(this.categories));
+        this.updatedAt = new Date().toISOString();
         if (CategoryManager.onDataChange) CategoryManager.onDataChange('categories');
     }
 
@@ -38,9 +39,14 @@ class CategoryManager {
     }
 
     addCategory(name) {
+        if (!window.Validator.isNotEmpty(name)) {
+            window.showToast("Il nome della categoria non può essere vuoto", "error");
+            return;
+        }
         const id = Date.now();
-        this.categories.push({ id, name, subcategories: [] });
+        this.categories.push({ id, name, subcategories: [], createdAt: new Date().toISOString() });
         this.save();
+        window.showToast("Categoria aggiunta con successo", "success");
     }
 
     editCategory(id, newName) {
@@ -52,9 +58,11 @@ class CategoryManager {
     }
 
     deleteCategory(id) {
+        // La conferma rimane modale poiché distruttiva, ma il feedback sarà Toast
         if (confirm('Eliminare questa categoria e tutte le sottocategorie?')) {
             this.categories = this.categories.filter(c => c.id != id);
             this.save();
+            window.showToast("Categoria eliminata", "success");
         }
     }
 
@@ -99,17 +107,23 @@ class TransactionManager {
     }
 
     addTransaction(type, amount, date, category, subcategory, description) {
+        if (!window.Validator.isMoney(amount)) {
+            window.showToast("Importo non valido", "error");
+            return null;
+        }
         const transaction = {
             id: Date.now(),
-            type, // 'entrata' or 'uscita'
+            type,
             amount: parseFloat(amount),
-            date,
+            date: date || new Date().toISOString().split('T')[0],
             category,
             subcategory,
-            description
+            description,
+            createdAt: new Date().toISOString()
         };
         this.transactions.push(transaction);
         this.save();
+        window.showToast(`${type === 'entrata' ? 'Incasso' : 'Spesa'} registrata con successo`, "success");
         return transaction;
     }
 
@@ -189,8 +203,21 @@ class SupplierManager {
     getSuppliers() { return this.suppliers; }
     getOrders() { return this.orders; }
     addOrder(supplierId, items, total) {
-        this.orders.push({ id: Date.now(), supplierId, items, total, date: new Date().toISOString(), status: 'Pendente' });
+        if (!window.Validator.isNotEmpty(items) || !window.Validator.isMoney(total)) {
+            window.showToast("Dati ordine incompleti o errati", "error");
+            return;
+        }
+        this.orders.push({ 
+            id: Date.now(), 
+            supplierId, 
+            items, 
+            total: parseFloat(total), 
+            date: new Date().toISOString(), 
+            status: 'Pendente',
+            createdAt: new Date().toISOString()
+        });
         this.save();
+        window.showToast("Ordine registrato", "success");
     }
 }
 

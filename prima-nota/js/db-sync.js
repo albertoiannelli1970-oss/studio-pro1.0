@@ -1,5 +1,5 @@
 // Prima Nota Pro 1.0® - Cloud Sync Module (Supabase)
-alert("Sincronizzazione Cloud Caricata!");
+// Sincronizzazione Cloud Silenziosa
 
 // Placeholder for user credentials
 const SUPABASE_URL = 'https://suqjbsmtxvmhgxvhhhbs.supabase.co';
@@ -17,31 +17,34 @@ function initSupabase(url, key) {
 
 
 async function syncToCloud() {
-    console.log("Sync push attempt...");
-    if (!supabaseClient) {
-        initSupabase();
-        if (!supabaseClient) return alert("Sistema Cloud non pronto.");
-    }
+    if (!supabaseClient) initSupabase();
+    if (!supabaseClient) return;
 
-    const data = {
-        user_name: localStorage.getItem('pn_user_name'),
-        company_name: localStorage.getItem('pn_company_name'),
-        categories: localStorage.getItem('pn_cat_ristorante'),
-        transactions: localStorage.getItem('pn_trx_ristorante'),
-        clients: localStorage.getItem('pn_clients'),
-        last_sync: new Date().toISOString()
-    };
-
+    window.showToast("Sincronizzazione in corso...", "info", 2000);
+    
     try {
-        const { data: result, error } = await supabaseClient
+        const username = localStorage.getItem('pn_user_name');
+        const data = {
+            user_name: username,
+            company_name: localStorage.getItem('pn_company_name'),
+            categories: localStorage.getItem('pn_categories'),
+            transactions: localStorage.getItem('pn_transactions'),
+            suppliers: localStorage.getItem('pn_suppliers'),
+            orders: localStorage.getItem('pn_orders'),
+            inventory: localStorage.getItem('pn_inventory'),
+            clients: localStorage.getItem('pn_clients'),
+            last_sync: new Date().toISOString()
+        };
+
+        const { error } = await supabaseClient
             .from('prima_nota_backups')
             .upsert(data, { onConflict: 'user_name' });
 
         if (error) throw error;
-        alert("Sincronizzazione Cloud completata! ✅");
+        window.showToast("Sincronizzazione completata ✨", "success");
     } catch (err) {
-        console.error("Sync push error:", err);
-        alert("Errore sincronizzazione: " + err.message);
+        console.error('Cloud Sync Error:', err);
+        window.showToast("Errore di sincronizzazione cloud", "error");
     }
 }
 
@@ -62,18 +65,20 @@ async function fetchDataFromCloud(username) {
         }
 
         if (data) {
-            if (data.company_name) localStorage.setItem('pn_company_name', data.company_name);
-            if (data.categories) localStorage.setItem('pn_cat_ristorante', data.categories);
-            if (data.transactions) localStorage.setItem('pn_trx_ristorante', data.transactions);
+            if (data.categories) localStorage.setItem('pn_categories', data.categories);
+            if (data.transactions) localStorage.setItem('pn_transactions', data.transactions);
+            if (data.suppliers) localStorage.setItem('pn_suppliers', data.suppliers);
+            if (data.orders) localStorage.setItem('pn_orders', data.orders);
+            if (data.inventory) localStorage.setItem('pn_inventory', data.inventory);
             if (data.clients) localStorage.setItem('pn_clients', data.clients);
-            localStorage.setItem('pn_user_name', username);
-            localStorage.setItem('pn_user_type', 'Azienda'); // Default
+            
+            window.showToast("Dati recuperati dal Cloud", "success");
+            window.location.reload(); // Ricarica per applicare i dati
             return true;
         }
     } catch (err) {
         console.error("Cloud Fetch Error:", err);
-        alert("Errore durante il recupero: " + err.message);
+        window.showToast("Errore durante il recupero: " + err.message, "error");
         return false;
     }
 }
-

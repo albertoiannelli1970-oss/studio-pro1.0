@@ -105,12 +105,16 @@ window.showNewSupplierForm = () => {
 };
 
 window.saveNewSupplier = () => {
+    if (!window.Validator.validateField('sup-name', 'text')) {
+        window.showToast("Il nome del fornitore è obbligatorio", "error");
+        return;
+    }
     const name = document.getElementById('sup-name').value.trim();
-    if (!name) return alert('Inserisci il nome del fornitore.');
     const contact = document.getElementById('sup-contact').value.trim() || '-';
     const category = document.getElementById('sup-category').value;
-    supplierManager.suppliers.push({ id: Date.now(), name, contact, category });
+    supplierManager.suppliers.push({ id: Date.now(), name, contact, category, createdAt: new Date().toISOString() });
     supplierManager.save();
+    window.showToast("Fornitore registrato", "success");
     document.querySelector('.modal-overlay').remove();
     renderSuppliers();
 };
@@ -148,12 +152,20 @@ window.showNewOrderForm = (supplierId) => {
 };
 
 window.saveNewOrder = (supplierId) => {
+    const itemsValid = window.Validator.validateField('ord-items', 'text');
+    const totalValid = window.Validator.validateField('ord-total', 'money');
+    
+    if (!itemsValid || !totalValid) {
+        window.showToast("Controlla i dati dell'ordine", "error");
+        return;
+    }
+
     const items = document.getElementById('ord-items').value.trim();
     const total = parseFloat(document.getElementById('ord-total').value);
     const status = document.getElementById('ord-status').value;
-    if (!items || isNaN(total) || total <= 0) return alert('Compila tutti i campi obbligatori.');
-    supplierManager.orders.push({ id: Date.now(), supplierId, items, total, date: new Date().toISOString(), status });
-    supplierManager.save();
+    
+    supplierManager.addOrder(supplierId, items, total);
+    // addOrder gestisce già il Toast di successo
     document.querySelector('.modal-overlay').remove();
     renderSuppliers();
 };
